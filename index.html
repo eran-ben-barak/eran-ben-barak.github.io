@@ -77,14 +77,12 @@
             position: absolute;
             width: 40px; /* Default size of the cursor */
             height: 40px;
-            background-color: rgba(30, 144, 255, 0.4); /* Light blue background */
+            background-color: #1e90ff; /* Pure blue cursor */
             border-radius: 50%;
             pointer-events: none;
             transform: scale(1); /* Default scaling */
             transition: transform 0.1s ease;
-            border: 2px solid #1e90ff; /* Vibrant blue border */
             z-index: 9999; /* Make sure it's on top */
-            mix-blend-mode: difference; /* Make sure the cursor blends */
             display: none; /* Hide the magnifier by default */
         }
 
@@ -92,9 +90,9 @@
             display: block; /* Show the cursor on hover */
         }
 
-        /* Apply magnification effect when hovering over text */
-        .name:hover, a:hover {
-            transform: scale(1.2); /* Slightly enlarge text when hovering */
+        /* Inversion on hover over text */
+        .name:hover, .bio:hover, a:hover {
+            filter: invert(100%); /* Invert colors on hover */
         }
     </style>
 </head>
@@ -128,7 +126,7 @@
         });
 
         // Show the magnifier cursor when hovering over text
-        document.querySelectorAll('.name, a').forEach((el) => {
+        document.querySelectorAll('.name, .bio, a').forEach((el) => {
             el.addEventListener('mouseenter', () => {
                 magnifierCursor.classList.add('show');
                 magnifierCursor.style.transform = 'scale(2)'; // Enlarge the cursor
