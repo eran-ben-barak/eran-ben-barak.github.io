@@ -27,6 +27,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            cursor: none; /* Hide default cursor */
         }
         .rectangle {
             background-color: #1a1a1a; /* Comfortable black rectangle */
@@ -35,7 +36,7 @@
             text-align: left;
             max-width: 600px;
             border-radius: 0; /* No rounded corners */
-            position: relative; /* For positioning the Instagram link */
+            position: relative;
         }
         .name {
             font-family: 'NeoklassItalic', sans-serif; /* Italic font for the name */
@@ -70,34 +71,30 @@
             width: 18px; /* Match the text size */
             height: 18px;
         }
-        
-        /* Circle hover effect */
-        .hover-effect {
+
+        /* Magnifying glass cursor effect */
+        .magnifier-cursor {
             position: absolute;
-            background-color: #1e90ff; /* Vibrant blue circle */
+            width: 40px; /* Default size of the cursor */
+            height: 40px;
+            background-color: rgba(30, 144, 255, 0.4); /* Light blue background */
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            transition: width 0.3s ease, height 0.3s ease, top 0.3s ease, left 0.3s ease;
-            pointer-events: none; /* Prevents the circle from interfering with text */
+            pointer-events: none;
+            transform: scale(1); /* Default scaling */
+            transition: transform 0.1s ease;
+            border: 2px solid #1e90ff; /* Vibrant blue border */
+            z-index: 9999; /* Make sure it's on top */
+            mix-blend-mode: difference; /* Make sure the cursor blends */
+            display: none; /* Hide the magnifier by default */
         }
 
-        /* Hover state for name and link text */
-        .name:hover .hover-effect, 
-        a:hover .hover-effect {
-            width: 80px; /* Larger circle on hover */
-            height: 80px; /* Larger circle on hover */
+        .magnifier-cursor.show {
+            display: block; /* Show the cursor on hover */
         }
 
-        /* Position the circle on hover */
-        .name:hover .hover-effect {
-            top: -10px;
-            left: -10px;
-        }
-
-        a:hover .hover-effect {
-            top: -10px;
-            left: -10px;
+        /* Apply magnification effect when hovering over text */
+        .name:hover, a:hover {
+            transform: scale(1.2); /* Slightly enlarge text when hovering */
         }
     </style>
 </head>
@@ -105,17 +102,43 @@
     <div class="rectangle">
         <p class="name">
             Eran Ben Barak
-            <span class="hover-effect"></span> <!-- Hover effect circle -->
         </p>
         <p class="bio">
             I'm a freelance type designer and graphic designer based in Pavia, Italy. I recently graduated from ECAL with a Master's in Type Design.
         </p>
         <div class="contact">
-            <p><a href="mailto:eransapp@gmail.com">Contact Me<span class="hover-effect"></span></a></p>
+            <p><a href="mailto:eransapp@gmail.com">Contact Me</a></p>
             <a href="https://www.instagram.com/eranbenbarak/" target="_blank">
                 <img src="./assets/instagram-logo.svg" alt="Instagram" class="instagram-logo">
             </a>
         </div>
     </div>
+
+    <!-- Magnifying cursor -->
+    <div id="magnifier-cursor" class="magnifier-cursor"></div>
+
+    <script>
+        // Select the magnifier cursor element
+        const magnifierCursor = document.getElementById('magnifier-cursor');
+
+        // Function to update cursor position
+        document.addEventListener('mousemove', (e) => {
+            magnifierCursor.style.left = `${e.pageX - magnifierCursor.offsetWidth / 2}px`;
+            magnifierCursor.style.top = `${e.pageY - magnifierCursor.offsetHeight / 2}px`;
+        });
+
+        // Show the magnifier cursor when hovering over text
+        document.querySelectorAll('.name, a').forEach((el) => {
+            el.addEventListener('mouseenter', () => {
+                magnifierCursor.classList.add('show');
+                magnifierCursor.style.transform = 'scale(2)'; // Enlarge the cursor
+            });
+
+            el.addEventListener('mouseleave', () => {
+                magnifierCursor.classList.remove('show');
+                magnifierCursor.style.transform = 'scale(1)'; // Reset cursor size
+            });
+        });
+    </script>
 </body>
 </html>
