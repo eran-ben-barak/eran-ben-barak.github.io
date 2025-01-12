@@ -32,9 +32,10 @@
             background-color: #1a1a1a; /* Comfortable black rectangle */
             color: #f9f9f9; /* Soft white text */
             padding: 30px;
-            text-align: left;
+            text-align: left; /* Align all text to the left */
             max-width: 600px;
-            border-radius: 0; /* Removed rounding */
+            border-radius: 0; /* No rounded corners */
+            position: relative; /* For positioning the Instagram link */
         }
         .name {
             font-family: 'NeoklassItalic', sans-serif; /* Italic font for the name */
@@ -43,18 +44,27 @@
             margin-bottom: 15px;
         }
         .bio {
-            text-align: center; /* Centered bio */
             font-size: 18px;
             line-height: 1.4;
             letter-spacing: 1px;
             margin: 20px 0;
         }
+        .contact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         a {
             text-decoration: none;
             color: #1e90ff; /* Vibrant blue link */
             font-size: 18px;
-            font-family: 'NeoklassItalic', sans-serif; /* Italic style for the link */
+            font-family: 'NeoklassItalic', sans-serif; /* Italic style for links */
             letter-spacing: 1px;
+        }
+        .instagram-logo {
+            display: inline-block;
+            width: 18px; /* Match the text size */
+            height: 18px;
         }
     </style>
 </head>
@@ -62,9 +72,14 @@
     <div class="rectangle">
         <p class="name">Eran Ben Barak</p>
         <p class="bio">
-            Eran Ben Barak is a freelance type designer and graphic designer based in Pavia, Italy. A recent graduate of ECAL's Master's in Type Design, he brings expertise and creativity to every project he undertakes.
+            I'm a freelance type designer and graphic designer based in Pavia, Italy. I recently graduated from ECAL with a Master's in Type Design.
         </p>
-        <p><a href="mailto:eransapp@gmail.com">Contact Me</a></p>
+        <div class="contact">
+            <p><a href="mailto:eransapp@gmail.com">Contact Me</a></p>
+            <a href="https://www.instagram.com/eranbenbarak/" target="_blank">
+                <img src="./assets/instagram-logo.svg" alt="Instagram" class="instagram-logo">
+            </a>
+        </div>
     </div>
 </body>
 </html>
