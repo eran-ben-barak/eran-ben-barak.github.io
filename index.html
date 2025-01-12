@@ -6,43 +6,59 @@
     <title>Eran Ben Barak | Type Designer</title>
     <style>
         @font-face {
-            font-family: 'Neoklass'; /* Replace with your font name */
+            font-family: 'Neoklass';
             src: url('./assets/Neoklass-Medium.woff') format('woff');
-            font-weight: normal; /* Define the weight (normal, bold, etc.) */
-            font-style: normal;  /* Define the style (normal, italic, etc.) */
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'NeoklassItalic';
+            src: url('./assets/Neoklass-MediumItalic.woff') format('woff');
+            font-weight: normal;
+            font-style: italic;
         }
         body {
             font-family: 'Neoklass', sans-serif;
-            line-height: 1.2; /* Reduced line-height for smaller leading */
+            background-color: #f4f4f9; /* Soft white background */
+            color: #f9f9f9; /* Soft white text color */
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f9;
         }
-        .container {
+        .rectangle {
+            background-color: #1a1a1a; /* Comfortable black rectangle */
+            color: #f9f9f9; /* Soft white text */
+            padding: 30px; /* Buffer inside the rectangle */
             text-align: center;
             max-width: 600px;
-            padding: 20px;
+            border-radius: 10px; /* Slightly rounded corners for aesthetics */
+        }
+        .name {
+            font-family: 'NeoklassItalic', sans-serif; /* Italic font for the name */
+            font-size: 28px; /* Larger font size for emphasis */
+            letter-spacing: 10px; /* Tracking for better visual impact */
+            margin-bottom: 15px;
         }
         p {
-            font-size: 20px; /* Increased font size */
-            letter-spacing: 1px; /* Added tracking (letter-spacing) */
-            margin: 10px 0; /* Added some spacing between paragraphs */
+            font-size: 18px; /* Text size for other content */
+            line-height: 1.4; /* Comfortable leading */
+            letter-spacing: 5px; /* Moderate tracking */
+            margin: 10px 0;
         }
         a {
             text-decoration: none;
-            color: #0078D7;
-            font-size: 20px; /* Ensured link matches the text size */
-            letter-spacing: 1px; /* Added tracking to the link as well */
+            color: #f9f9f9; /* Soft white link color */
+            font-size: 18px;
+            letter-spacing: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <p>Eran Ben Barak</p>
+    <div class="rectangle">
+        <p class="name">Eran Ben Barak</p>
         <p>Type Designer based in Pavia, Italy.</p>
         <p>Recent graduate of ECAL's Master's in Type Design.</p>
         <p><a href="mailto:eransapp@gmail.com">Contact Me</a></p>
