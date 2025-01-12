@@ -19,19 +19,18 @@
         }
         body {
             font-family: 'Neoklass', sans-serif;
-            background-color: #f4f4f9; /* Soft white background */
-            color: #f9f9f9; /* Soft white text */
+            background-color: #1a1a1a; /* Comfortable dark gray background */
+            color: #f4f4f9; /* Soft white text */
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            cursor: none; /* Hide default cursor */
         }
         .rectangle {
-            background-color: #1a1a1a; /* Comfortable black rectangle */
-            color: #f9f9f9; /* Soft white text */
+            background-color: #f4f4f9; /* Soft white box */
+            color: #1a1a1a; /* Dark text */
             padding: 30px;
             text-align: left;
             max-width: 600px;
@@ -72,28 +71,13 @@
             height: 18px;
         }
 
-        /* Magnifying glass cursor effect */
-        .magnifier-cursor {
-            position: absolute;
-            width: 40px; /* Default size of the cursor */
-            height: 40px;
-            background-color: #1e90ff; /* Pure blue cursor */
-            border-radius: 50%;
-            pointer-events: none;
-            transform: scale(1); /* Default scaling */
-            transition: transform 0.1s ease;
-            z-index: 9999; /* Make sure it's on top */
-            display: none; /* Hide the magnifier by default */
+        /* Fix italic font for mobile */
+        @media (max-width: 600px) {
+            .name, a {
+                font-family: 'NeoklassItalic', sans-serif !important; /* Force italic style on small screens */
+            }
         }
 
-        .magnifier-cursor.show {
-            display: block; /* Show the cursor on hover */
-        }
-
-        /* Inversion on hover over text */
-        .name:hover, .bio:hover, a:hover {
-            filter: invert(100%); /* Invert colors on hover */
-        }
     </style>
 </head>
 <body>
@@ -111,32 +95,5 @@
             </a>
         </div>
     </div>
-
-    <!-- Magnifying cursor -->
-    <div id="magnifier-cursor" class="magnifier-cursor"></div>
-
-    <script>
-        // Select the magnifier cursor element
-        const magnifierCursor = document.getElementById('magnifier-cursor');
-
-        // Function to update cursor position
-        document.addEventListener('mousemove', (e) => {
-            magnifierCursor.style.left = `${e.pageX - magnifierCursor.offsetWidth / 2}px`;
-            magnifierCursor.style.top = `${e.pageY - magnifierCursor.offsetHeight / 2}px`;
-        });
-
-        // Show the magnifier cursor when hovering over text
-        document.querySelectorAll('.name, .bio, a').forEach((el) => {
-            el.addEventListener('mouseenter', () => {
-                magnifierCursor.classList.add('show');
-                magnifierCursor.style.transform = 'scale(2)'; // Enlarge the cursor
-            });
-
-            el.addEventListener('mouseleave', () => {
-                magnifierCursor.classList.remove('show');
-                magnifierCursor.style.transform = 'scale(1)'; // Reset cursor size
-            });
-        });
-    </script>
 </body>
 </html>
