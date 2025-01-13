@@ -1,99 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eran Ben Barak | Type Designer</title>
-    <style>
-        @font-face {
-            font-family: 'Neoklass';
-            src: url('./assets/Neoklass-Medium.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'NeoklassItalic';
-            src: url('./assets/Neoklass-MediumItalic.woff') format('woff');
-            font-weight: normal;
-            font-style: italic;
-        }
-        body {
-            font-family: 'Neoklass', sans-serif;
-            background-color: #1a1a1a; /* Comfortable dark gray background */
-            color: #f4f4f9; /* Soft white text */
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .rectangle {
-            background-color: #f4f4f9; /* Soft white box */
-            color: #1a1a1a; /* Dark text */
-            padding: 30px;
-            text-align: left;
-            max-width: 600px;
-            border-radius: 0; /* No rounded corners */
-            position: relative;
-        }
-        .name {
-            font-family: 'NeoklassItalic', sans-serif; /* Italic font for the name */
-            font-size: 18px;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-        .bio {
-            font-size: 18px;
-            line-height: 1.4;
-            letter-spacing: 1px;
-            margin: 20px 0;
-        }
-        .contact {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        a {
-            text-decoration: none;
-            color: #1e90ff; /* Vibrant blue link */
-            font-size: 18px;
-            font-family: 'NeoklassItalic', sans-serif; /* Italic style for links */
-            letter-spacing: 1px;
-            position: relative;
-            display: inline-block;
-        }
-        .instagram-logo {
-            display: inline-block;
-            width: 18px; /* Match the text size */
-            height: 18px;
-        }
-
-        /* Fix italic font for mobile */
-        @media (max-width: 600px) {
-            .name, a {
-                font-family: 'NeoklassItalic', sans-serif !important; /* Force italic style on small screens */
-            }
-        }
-
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Bubble Effect</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="rectangle">
-        <p class="name">
-            Eran Ben Barak
-        </p>
-        <p class="bio">
-            I'm a freelance type designer and graphic designer based in Pavia, Italy. I recently graduated from ECAL with a Master's in Type Design.
-        </p>
-        <div class="contact">
-            <p><a href="mailto:eransapp@gmail.com">Contact Me</a></p>
-            <a href="https://www.instagram.com/eranbenbarak/" target="_blank">
-                <img src="./assets/instagram-logo.svg" alt="Instagram" class="instagram-logo">
-            </a>
-        </div>
-    </div>
+  <canvas id="three-canvas"></canvas>
+  <script src="./assets/three.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
