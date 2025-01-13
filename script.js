@@ -1,4 +1,4 @@
-import * as THREE from './assets/three.min.js';
+import * as THREE from './assets/three.core.min.js';
 
 // 1. Set up the scene, camera, and renderer
 const scene = new THREE.Scene();
