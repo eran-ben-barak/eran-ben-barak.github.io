@@ -1,67 +1,70 @@
-import * as THREE from './assets/three.core.min.js';
-
-// 1. Set up the scene, camera, and renderer
+// Set up the Three.js environment
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas') });
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+camera.position.z = 10;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// 2. Load the SVG file and create 3D shapes
+// Load the SVG and convert it to a shape
 const loader = new THREE.SVGLoader();
-loader.load('./assets/shape.svg', (data) => {
-  const paths = data.paths;
-  const material = new THREE.MeshStandardMaterial({
-    color: 0x222222,
-    emissive: 0x000000,
-    roughness: 0.4,
-    metalness: 1,
-  });
+loader.load(
+  './assets/shape.svg',
+  (data) => {
+    const paths = data.paths;
 
-  paths.forEach((path) => {
-    const shapes = path.toShapes(true);
-    shapes.forEach((shape) => {
-      const geometry = new THREE.ExtrudeGeometry(shape, {
-        depth: 5,
-        bevelEnabled: true,
-        bevelThickness: 2,
-        bevelSize: 1,
-        bevelSegments: 5,
+    paths.forEach((path) => {
+      const material = new THREE.MeshBasicMaterial({
+        color: path.color ? path.color : 0xffffff,
+        side: THREE.DoubleSide,
+        depthWrite: false,
       });
-      const mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
+
+      const shapes = THREE.SVGLoader.createShapes(path);
+      shapes.forEach((shape) => {
+        const geometry = new THREE.ExtrudeGeometry(shape, {
+          depth: 1,
+          bevelEnabled: false,
+        });
+        const mesh = new THREE.Mesh(geometry, material);
+        mesh.position.z = 0;
+        scene.add(mesh);
+      });
     });
-  });
-});
+  },
+  (xhr) => {
+    console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+  },
+  (error) => {
+    console.error('An error happened', error);
+  }
+);
 
-// 3. Add lighting
-const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set(10, 10, 10);
-scene.add(light);
-
-const ambientLight = new THREE.AmbientLight(0x404040); // Soft ambient light
-scene.add(ambientLight);
-
-// 4. Animate with cursor interaction
-camera.position.z = 50;
-
+// Handle mouse movement
 document.addEventListener('mousemove', (event) => {
   const x = (event.clientX / window.innerWidth) * 2 - 1;
   const y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-  camera.rotation.x = y * 0.5;
-  camera.rotation.y = x * 0.5;
+  scene.rotation.y = x * 0.2;
+  scene.rotation.x = y * 0.2;
 });
 
+// Animation loop
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }
 animate();
 
-// 5. Handle window resize
+// Handle window resizing
 window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
 });
