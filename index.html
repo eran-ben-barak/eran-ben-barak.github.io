@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>3D Model Viewer</title>
     <style>
       * {
         padding: 0;
         margin: 0;
-        line-height: 1;
         box-sizing: border-box;
       }
       body {
@@ -40,73 +39,49 @@
 
       class ModelViewer {
         constructor(container) {
-          // Set container style for center positioning
-          container.style.position = "fixed";
-          container.style.top = "50%";
-          container.style.left = "50%";
-          container.style.transform = "translate(-50%, -50%)";
-          container.style.width = "100vw";
-          container.style.height = "100vh";
-
-          // Setup scene
+          // Setup scene, camera, and renderer
           this.scene = new THREE.Scene();
           this.scene.background = new THREE.Color(0x000000);
 
-          // Setup camera with adjusted position for center view
           this.camera = new THREE.PerspectiveCamera(
             75,
             window.innerWidth / window.innerHeight,
             0.1,
             1000
           );
-          this.camera.position.set(0, 0, 3); // Adjusted camera position
+          this.camera.position.set(0, 0, 3);
 
-          // Setup renderer
           this.renderer = new THREE.WebGLRenderer({ antialias: true });
           this.renderer.setSize(window.innerWidth, window.innerHeight);
           this.renderer.setPixelRatio(window.devicePixelRatio);
-          this.renderer.shadowMap.enabled = true;
           container.appendChild(this.renderer.domElement);
 
-          // Setup lights
+          // Lights
           const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
           this.scene.add(ambientLight);
 
           const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
           directionalLight.position.set(2, 2, 2);
-          directionalLight.castShadow = true;
           this.scene.add(directionalLight);
 
-          // Mouse movement tracking
+          // Event listeners
           this.mouse = new THREE.Vector2();
           this.targetRotation = new THREE.Vector2();
           this.currentRotation = new THREE.Vector2();
-          this.model = null;
+          this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-          // Add mouse move event listener
-          document.addEventListener("mousemove", this.onMouseMove.bind(this));
+          if (this.isMobile) {
+            window.addEventListener("scroll", this.onScroll.bind(this));
+          } else {
+            window.addEventListener("mousemove", this.onMouseMove.bind(this));
+          }
+          window.addEventListener("resize", this.onWindowResize.bind(this));
 
-          // Animation mixer
           this.mixer = null;
           this.clock = new THREE.Clock();
+          this.model = null;
 
-          // Handle window resize
-          window.addEventListener(
-            "resize",
-            this.onWindowResize.bind(this),
-            false
-          );
-
-          // Start animation loop
           this.animate();
-        }
-
-        onMouseMove(event) {
-          this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-          this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-          this.targetRotation.y = this.mouse.x * Math.PI * 0.5;
-          this.targetRotation.x = this.mouse.y * Math.PI * 0.25;
         }
 
         loadModel(url) {
@@ -115,29 +90,21 @@
           loader.load(
             url,
             (gltf) => {
-              // Clear existing model if any
-              if (this.model) {
-                this.scene.remove(this.model);
-              }
+              if (this.model) this.scene.remove(this.model);
 
               this.model = gltf.scene;
 
-              // Center the model
+              // Center and scale the model
               const box = new THREE.Box3().setFromObject(this.model);
               const center = box.getCenter(new THREE.Vector3());
+              this.model.position.set(-center.x, -center.y, -center.z);
 
-              // Reset model position to origin
-              this.model.position.x = -center.x;
-              this.model.position.y = -center.y;
-              this.model.position.z = -center.z;
-
-              // Get model size
               const size = box.getSize(new THREE.Vector3());
-              const maxDim = Math.max(size.x, size.y, size.z);
+              const scale = 2 / Math.max(size.x, size.y, size.z);
+              this.model.scale.setScalar(scale);
 
-              // Scale model to fit view
-              const scale = 2 / maxDim;
-              this.model.scale.multiplyScalar(scale);
+              // Reorient the model to face the viewer
+              this.model.rotation.x = Math.PI / 2;
 
               // Enable shadows
               this.model.traverse((child) => {
@@ -147,31 +114,29 @@
                 }
               });
 
-              // Add model to scene
               this.scene.add(this.model);
 
-              // Setup animation mixer if model has animations
-              if (gltf.animations && gltf.animations.length) {
+              if (gltf.animations.length) {
                 this.mixer = new THREE.AnimationMixer(this.model);
-
-                gltf.animations.forEach((clip) => {
-                  const action = this.mixer.clipAction(clip);
-                  action.play();
-                });
+                gltf.animations.forEach((clip) => this.mixer.clipAction(clip).play());
               }
-
-              // Position model at scene center
-              this.model.position.set(0, 0, 0);
             },
-            // Progress callback
-            (xhr) => {
-              console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
-            },
-            // Error callback
-            (error) => {
-              console.error("Error loading model:", error);
-            }
+            (xhr) => console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`),
+            (error) => console.error("Error loading model:", error)
           );
+        }
+
+        onMouseMove(event) {
+          this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+          this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          this.targetRotation.y = this.mouse.x * Math.PI * 0.1; // Reduced sensitivity
+          this.targetRotation.x = this.mouse.y * Math.PI * 0.05;
+        }
+
+        onScroll() {
+          const scrollY = window.scrollY / window.innerHeight;
+          this.targetRotation.x = scrollY * Math.PI * 0.05;
         }
 
         onWindowResize() {
@@ -183,28 +148,22 @@
         updateModelRotation() {
           if (!this.model) return;
 
-          // Smooth rotation
-          this.currentRotation.y +=
-            (this.targetRotation.y - this.currentRotation.y) * 0.05;
-          this.currentRotation.x +=
-            (this.targetRotation.x - this.currentRotation.x) * 0.05;
+          this.currentRotation.y += (this.targetRotation.y - this.currentRotation.y) * 0.1;
+          this.currentRotation.x += (this.targetRotation.x - this.currentRotation.x) * 0.1;
 
           this.model.rotation.y = this.currentRotation.y;
           this.model.rotation.x = this.currentRotation.x;
         }
 
         animate() {
-          requestAnimationFrame(this.animate.bind(this));
+          requestAnimationFrame(() => this.animate());
 
-          // Update model rotation
-          this.updateModelRotation();
-
-          // Update animations
           if (this.mixer) {
             const delta = this.clock.getDelta();
             this.mixer.update(delta);
           }
 
+          this.updateModelRotation();
           this.renderer.render(this.scene, this.camera);
         }
       }
