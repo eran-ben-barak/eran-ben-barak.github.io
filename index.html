@@ -1,15 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Bubble Letters</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
     <style>
-        body { margin: 0; overflow: hidden; background: black; }
-        canvas { display: block; }
+      * {
+        padding: 0;
+        margin: 0;
+        line-height: 1;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: black;
+      }
+      #model-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+      }
     </style>
-</head>
-<body>
-    <script type="module" src="./main.js"></script>
-</body>
+  </head>
+  <body>
+    <div id="model-container"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+      class ModelViewer {
+        constructor(container) {
+          // Set container style for center positioning
+          container.style.position = "fixed";
+          container.style.top = "50%";
+          container.style.left = "50%";
+          container.style.transform = "translate(-50%, -50%)";
+          container.style.width = "100vw";
+          container.style.height = "100vh";
+
+          // Setup scene
+          this.scene = new THREE.Scene();
+          this.scene.background = new THREE.Color(0x000000);
+
+          // Setup camera with adjusted position for center view
+          this.camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+          );
+          this.camera.position.set(0, 0, 3); // Adjusted camera position
+
+          // Setup renderer
+          this.renderer = new THREE.WebGLRenderer({ antialias: true });
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          this.renderer.setPixelRatio(window.devicePixelRatio);
+          this.renderer.shadowMap.enabled = true;
+          container.appendChild(this.renderer.domElement);
+
+          // Setup lights
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+          this.scene.add(ambientLight);
+
+          const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+          directionalLight.position.set(2, 2, 2);
+          directionalLight.castShadow = true;
+          this.scene.add(directionalLight);
+
+          // Mouse movement tracking
+          this.mouse = new THREE.Vector2();
+          this.targetRotation = new THREE.Vector2();
+          this.currentRotation = new THREE.Vector2();
+          this.model = null;
+
+          // Add mouse move event listener
+          document.addEventListener("mousemove", this.onMouseMove.bind(this));
+
+          // Animation mixer
+          this.mixer = null;
+          this.clock = new THREE.Clock();
+
+          // Handle window resize
+          window.addEventListener(
+            "resize",
+            this.onWindowResize.bind(this),
+            false
+          );
+
+          // Start animation loop
+          this.animate();
+        }
+
+        onMouseMove(event) {
+          this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+          this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          this.targetRotation.y = this.mouse.x * Math.PI * 0.5;
+          this.targetRotation.x = this.mouse.y * Math.PI * 0.25;
+        }
+
+        loadModel(url) {
+          const loader = new GLTFLoader();
+
+          loader.load(
+            url,
+            (gltf) => {
+              // Clear existing model if any
+              if (this.model) {
+                this.scene.remove(this.model);
+              }
+
+              this.model = gltf.scene;
+
+              // Center the model
+              const box = new THREE.Box3().setFromObject(this.model);
+              const center = box.getCenter(new THREE.Vector3());
+
+              // Reset model position to origin
+              this.model.position.x = -center.x;
+              this.model.position.y = -center.y;
+              this.model.position.z = -center.z;
+
+              // Get model size
+              const size = box.getSize(new THREE.Vector3());
+              const maxDim = Math.max(size.x, size.y, size.z);
+
+              // Scale model to fit view
+              const scale = 2 / maxDim;
+              this.model.scale.multiplyScalar(scale);
+
+              // Enable shadows
+              this.model.traverse((child) => {
+                if (child.isMesh) {
+                  child.castShadow = true;
+                  child.receiveShadow = true;
+                }
+              });
+
+              // Add model to scene
+              this.scene.add(this.model);
+
+              // Setup animation mixer if model has animations
+              if (gltf.animations && gltf.animations.length) {
+                this.mixer = new THREE.AnimationMixer(this.model);
+
+                gltf.animations.forEach((clip) => {
+                  const action = this.mixer.clipAction(clip);
+                  action.play();
+                });
+              }
+
+              // Position model at scene center
+              this.model.position.set(0, 0, 0);
+            },
+            // Progress callback
+            (xhr) => {
+              console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`);
+            },
+            // Error callback
+            (error) => {
+              console.error("Error loading model:", error);
+            }
+          );
+        }
+
+        onWindowResize() {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        updateModelRotation() {
+          if (!this.model) return;
+
+          // Smooth rotation
+          this.currentRotation.y +=
+            (this.targetRotation.y - this.currentRotation.y) * 0.05;
+          this.currentRotation.x +=
+            (this.targetRotation.x - this.currentRotation.x) * 0.05;
+
+          this.model.rotation.y = this.currentRotation.y;
+          this.model.rotation.x = this.currentRotation.x;
+        }
+
+        animate() {
+          requestAnimationFrame(this.animate.bind(this));
+
+          // Update model rotation
+          this.updateModelRotation();
+
+          // Update animations
+          if (this.mixer) {
+            const delta = this.clock.getDelta();
+            this.mixer.update(delta);
+          }
+
+          this.renderer.render(this.scene, this.camera);
+        }
+      }
+
+      const container = document.getElementById("model-container");
+      const viewer = new ModelViewer(container);
+      viewer.loadModel("/assets/models/bubble_letters.glb");
+    </script>
+  </body>
 </html>
