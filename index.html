@@ -35,142 +35,149 @@
     </script>
     <script type="module">
       import * as THREE from "three";
-      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-      class ModelViewer {
-        constructor(container) {
-          // Setup scene, camera, and renderer
-          this.scene = new THREE.Scene();
-          this.scene.background = new THREE.Color(0x000000);
+class ModelViewer {
+  constructor(container) {
+    // Previous setup code remains the same...
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x000000);
 
-          this.camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-          );
-          this.camera.position.set(0, 0, 3);
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    this.camera.position.set(0, 0, 3);
 
-          this.renderer = new THREE.WebGLRenderer({ antialias: true });
-          this.renderer.setSize(window.innerWidth, window.innerHeight);
-          this.renderer.setPixelRatio(window.devicePixelRatio);
-          container.appendChild(this.renderer.domElement);
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    container.appendChild(this.renderer.domElement);
 
-          // Lights
-          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-          this.scene.add(ambientLight);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.scene.add(ambientLight);
 
-          const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-          directionalLight.position.set(2, 2, 2);
-          this.scene.add(directionalLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(2, 2, 2);
+    this.scene.add(directionalLight);
 
-          // Event listeners
-          this.mouse = new THREE.Vector2();
-          this.targetRotation = new THREE.Vector2();
-          this.currentRotation = new THREE.Vector2();
-          this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    this.mouse = new THREE.Vector2();
+    this.targetRotation = new THREE.Vector2();
+    this.currentRotation = new THREE.Vector2();
+    this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-          if (this.isMobile) {
-            window.addEventListener("scroll", this.onScroll.bind(this));
-          } else {
-            window.addEventListener("mousemove", this.onMouseMove.bind(this));
+    if (this.isMobile) {
+      window.addEventListener("scroll", this.onScroll.bind(this));
+    } else {
+      window.addEventListener("mousemove", this.onMouseMove.bind(this));
+    }
+    window.addEventListener("resize", this.onWindowResize.bind(this));
+
+    this.mixer = null;
+    this.clock = new THREE.Clock();
+    this.model = null;
+
+    this.animate();
+  }
+
+  loadModel(url) {
+    const loader = new GLTFLoader();
+
+    loader.load(
+      url,
+      (gltf) => {
+        if (this.model) this.scene.remove(this.model);
+
+        this.model = gltf.scene;
+
+        // Center and scale the model
+        const box = new THREE.Box3().setFromObject(this.model);
+        const center = box.getCenter(new THREE.Vector3());
+        this.model.position.set(-center.x, -center.y, -center.z);
+
+        const size = box.getSize(new THREE.Vector3());
+        const scale = 2 / Math.max(size.x, size.y, size.z);
+        this.model.scale.setScalar(scale);
+
+        // Create a group to handle rotations more easily
+        const group = new THREE.Group();
+        group.add(this.model);
+        this.scene.add(group);
+        this.model = group; // Use the group for future rotations
+
+        // Set initial rotation to make model upright and facing camera
+        this.model.rotation.order = 'XYZ';
+        this.model.rotation.x = -Math.PI / 2; // Rotate 90 degrees to stand upright
+        this.model.rotation.y = Math.PI; // Rotate 180 degrees to face camera
+        this.model.rotation.z = Math.PI;
+
+        // Enable shadows
+        gltf.scene.traverse((child) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
           }
-          window.addEventListener("resize", this.onWindowResize.bind(this));
+        });
 
-          this.mixer = null;
-          this.clock = new THREE.Clock();
-          this.model = null;
-
-          this.animate();
+        if (gltf.animations.length) {
+          this.mixer = new THREE.AnimationMixer(gltf.scene);
+          gltf.animations.forEach((clip) => this.mixer.clipAction(clip).play());
         }
+      },
+      (xhr) => console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`),
+      (error) => console.error("Error loading model:", error)
+    );
+  }
 
-        loadModel(url) {
-          const loader = new GLTFLoader();
+  updateModelRotation() {
+    if (!this.model) return;
 
-          loader.load(
-            url,
-            (gltf) => {
-              if (this.model) this.scene.remove(this.model);
+    this.currentRotation.y += (this.targetRotation.y - this.currentRotation.y) * 0.1;
+    this.currentRotation.x += (this.targetRotation.x - this.currentRotation.x) * 0.1;
 
-              this.model = gltf.scene;
+    // Apply rotations while maintaining upright orientation
+    this.model.rotation.x = -Math.PI / 2 + this.currentRotation.x;
+    this.model.rotation.y = Math.PI + this.currentRotation.y;
+  }
 
-              // Center and scale the model
-              const box = new THREE.Box3().setFromObject(this.model);
-              const center = box.getCenter(new THREE.Vector3());
-              this.model.position.set(-center.x, -center.y, -center.z);
+  // Rest of the methods remain the same...
+  onMouseMove(event) {
+    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-              const size = box.getSize(new THREE.Vector3());
-              const scale = 2 / Math.max(size.x, size.y, size.z);
-              this.model.scale.setScalar(scale);
+    this.targetRotation.y = this.mouse.x * Math.PI * 0.1;
+    this.targetRotation.x = this.mouse.y * Math.PI * 0.05;
+  }
 
-              // Reorient the model to face the viewer
-              this.model.rotation.x = Math.PI / 2;
+  onScroll() {
+    const scrollY = window.scrollY / window.innerHeight;
+    this.targetRotation.x = scrollY * Math.PI * 0.05;
+  }
 
-              // Enable shadows
-              this.model.traverse((child) => {
-                if (child.isMesh) {
-                  child.castShadow = true;
-                  child.receiveShadow = true;
-                }
-              });
+  onWindowResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
 
-              this.scene.add(this.model);
+  animate() {
+    requestAnimationFrame(() => this.animate());
 
-              if (gltf.animations.length) {
-                this.mixer = new THREE.AnimationMixer(this.model);
-                gltf.animations.forEach((clip) => this.mixer.clipAction(clip).play());
-              }
-            },
-            (xhr) => console.log(`${(xhr.loaded / xhr.total) * 100}% loaded`),
-            (error) => console.error("Error loading model:", error)
-          );
-        }
+    if (this.mixer) {
+      const delta = this.clock.getDelta();
+      this.mixer.update(delta);
+    }
 
-        onMouseMove(event) {
-          this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-          this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    this.updateModelRotation();
+    this.renderer.render(this.scene, this.camera);
+  }
+}
 
-          this.targetRotation.y = this.mouse.x * Math.PI * 0.1; // Reduced sensitivity
-          this.targetRotation.x = this.mouse.y * Math.PI * 0.05;
-        }
-
-        onScroll() {
-          const scrollY = window.scrollY / window.innerHeight;
-          this.targetRotation.x = scrollY * Math.PI * 0.05;
-        }
-
-        onWindowResize() {
-          this.camera.aspect = window.innerWidth / window.innerHeight;
-          this.camera.updateProjectionMatrix();
-          this.renderer.setSize(window.innerWidth, window.innerHeight);
-        }
-
-        updateModelRotation() {
-          if (!this.model) return;
-
-          this.currentRotation.y += (this.targetRotation.y - this.currentRotation.y) * 0.1;
-          this.currentRotation.x += (this.targetRotation.x - this.currentRotation.x) * 0.1;
-
-          this.model.rotation.y = this.currentRotation.y;
-          this.model.rotation.x = this.currentRotation.x;
-        }
-
-        animate() {
-          requestAnimationFrame(() => this.animate());
-
-          if (this.mixer) {
-            const delta = this.clock.getDelta();
-            this.mixer.update(delta);
-          }
-
-          this.updateModelRotation();
-          this.renderer.render(this.scene, this.camera);
-        }
-      }
-
-      const container = document.getElementById("model-container");
-      const viewer = new ModelViewer(container);
-      viewer.loadModel("/assets/models/bubble_letters.glb");
+const container = document.getElementById("model-container");
+const viewer = new ModelViewer(container);
+viewer.loadModel("/assets/models/bubble_letters.glb");
     </script>
   </body>
 </html>
