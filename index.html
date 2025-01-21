@@ -60,7 +60,7 @@ class ModelViewer {
     this.scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(2, 2, 2);
+    directionalLight.position.set(0, 1, 1);
     this.scene.add(directionalLight);
 
     this.mouse = new THREE.Vector2();
@@ -98,7 +98,7 @@ class ModelViewer {
         this.model.position.set(-center.x, -center.y, -center.z);
 
         const size = box.getSize(new THREE.Vector3());
-        const scale = 2 / Math.max(size.x, size.y, size.z);
+        const scale = 4 / Math.max(size.x, size.y, size.z);
         this.model.scale.setScalar(scale);
 
         // Create a group to handle rotations more easily
@@ -146,10 +146,13 @@ class ModelViewer {
   onMouseMove(event) {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    this.targetRotation.y = this.mouse.x * Math.PI * 0.1;
-    this.targetRotation.x = this.mouse.y * Math.PI * 0.05;
+  
+    // Adjust the target rotation to make the model "look" at the cursor naturally
+    const intensity = 0.1; // Controls how strongly the model follows the mouse
+    this.targetRotation.y = this.mouse.x * Math.PI * intensity; // Face right and left
+    this.targetRotation.x = -this.mouse.y * Math.PI * intensity;  // Invert Y-axis to correct behavior
   }
+
 
   onScroll() {
     const scrollY = window.scrollY / window.innerHeight;
@@ -177,7 +180,7 @@ class ModelViewer {
 
 const container = document.getElementById("model-container");
 const viewer = new ModelViewer(container);
-viewer.loadModel("/assets/models/bubble_letters.glb");
+viewer.loadModel("/assets/models/greetings.glb");
     </script>
   </body>
 </html>
