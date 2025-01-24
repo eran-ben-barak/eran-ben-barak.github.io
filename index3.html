@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eran Ben Barak</title>
+    <style>
+      /* Reset styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'CustomFont', sans-serif;
+        background-color: black;
+        color: white;
+        overflow: hidden;
+      }
+
+      @font-face {
+        font-family: 'CustomFont';
+        src: url('/assets/fonts/Neoklass-Black.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      #model-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* Header styles */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+        background-color: black;
+        z-index: 1000;
+      }
+
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        position: relative;
+      }
+
+      .header-title {
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'CustomFont', sans-serif; /* Ensures header uses CustomFont */
+      }
+
+      .buttons {
+        display: flex;
+        gap: 20px;
+      }
+
+      .button {
+        font-family: 'CustomFont', sans-serif; /* Apply font to buttons */
+        font-size: 20px; /* Matches header font size */
+        font-weight: bold;
+        color: white;
+        background-color: transparent;
+        border: 1px solid white;
+        text-transform: uppercase;
+        padding: 5px 20px 2px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .button:hover {
+        color: black;
+        background-color: white;
+        border-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="buttons">
+        <button class="button">About</button>
+      </div>
+      <div class="header-content">
+        <div class="header-title">Eran Ben Barak</div>
+      </div>
+      <div class="buttons">
+        <button class="button">Contact</button>
+      </div>
+    </header>
+    <div id="model-container"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+      class ModelViewer {
+        constructor(container) {
+          this.container = container;
+          this.scene = new THREE.Scene();
+          this.scene.background = new THREE.Color(0x000000);
+
+          this.camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+          );
+          this.camera.position.set(0, 0, 3);
+
+          this.renderer = new THREE.WebGLRenderer({ antialias: true });
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          this.renderer.setPixelRatio(window.devicePixelRatio);
+          this.container.appendChild(this.renderer.domElement);
+
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+          this.scene.add(ambientLight);
+
+          const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+          directionalLight.position.set(0, 1, 1);
+          this.scene.add(directionalLight);
+
+          this.currentModelIndex = 1;
+          this.mixer = null;
+          this.clock = new THREE.Clock();
+          this.model = null;
+          this.modelGroup = new THREE.Group();
+          this.scene.add(this.modelGroup);
+
+          window.addEventListener("resize", this.onWindowResize.bind(this));
+
+          this.loadNextModel();
+          this.startModelLoop();
+          this.animate();
+        }
+
+        loadModel(url, onLoad, onError) {
+          const loader = new GLTFLoader();
+          loader.load(
+            url,
+            (gltf) => {
+              const model = gltf.scene;
+              const box = new THREE.Box3().setFromObject(model);
+              const center = box.getCenter(new THREE.Vector3());
+              model.position.set(-center.x, -center.y, -center.z);
+
+              const size = box.getSize(new THREE.Vector3());
+              const scale = 4 / Math.max(size.x, size.y, size.z);
+              model.scale.setScalar(scale);
+
+              if (gltf.animations.length) {
+                this.mixer = new THREE.AnimationMixer(gltf.scene);
+                gltf.animations.forEach((clip) =>
+                  this.mixer.clipAction(clip).play()
+                );
+              }
+
+              onLoad(model);
+            },
+            undefined,
+            (error) => onError(error)
+          );
+        }
+
+        loadNextModel() {
+          const modelUrl = `/assets/models/${this.currentModelIndex}.glb`;
+          this.loadModel(
+            modelUrl,
+            (model) => {
+              this.showModel(model);
+              this.currentModelIndex++;
+            },
+            () => {
+              this.currentModelIndex = 1;
+              this.loadNextModel();
+            }
+          );
+        }
+
+        showModel(model) {
+          const oldModel = this.model;
+          this.model = model;
+          this.modelGroup.add(model);
+
+          if (oldModel) {
+            const slideOut = new THREE.Vector3(-5, 0, 0);
+            const slideIn = new THREE.Vector3(5, 0, 0);
+            model.position.copy(slideIn);
+
+            const slideDuration = 1; // seconds
+            const clock = new THREE.Clock();
+
+            const animateTransition = () => {
+              const elapsedTime = clock.getElapsedTime();
+              const progress = elapsedTime / slideDuration;
+
+              if (progress < 1) {
+                oldModel.position.lerp(slideOut, progress);
+                model.position.lerp(new THREE.Vector3(0, 0, 0), progress);
+                requestAnimationFrame(animateTransition);
+              } else {
+                this.modelGroup.remove(oldModel);
+              }
+
+              this.renderer.render(this.scene, this.camera);
+            };
+
+            animateTransition();
+          }
+        }
+
+        startModelLoop() {
+          setInterval(() => {
+            this.loadNextModel();
+          }, 3000);
+        }
+
+        onWindowResize() {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        animate() {
+          requestAnimationFrame(() => this.animate());
+
+          if (this.mixer) {
+            const delta = this.clock.getDelta();
+            this.mixer.update(delta);
+          }
+
+          this.renderer.render(this.scene, this.camera);
+        }
+      }
+
+      const container = document.getElementById("model-container");
+      new ModelViewer(container);
+    </script>
+  </body>
+</html>
+
+        updateModelRotation() {
+          if (!this.model) return;
+
+          this.currentRotation.y +=
+            (this.targetRotation.y - this.currentRotation.y) * 0.1;
+          this.currentRotation.x +=
+            (this.targetRotation.x - this.currentRotation.x) * 0.1;
+
+          this.model.rotation.x = -Math.PI / 2 + this.currentRotation.x;
+          this.model.rotation.y = Math.PI + this.currentRotation.y;
+        }
+
+        onMouseMove(event) {
+          this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+          this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+          const intensity = 0.1;
+          this.targetRotation.y = this.mouse.x * Math.PI * intensity;
+          this.targetRotation.x = -this.mouse.y * Math.PI * intensity;
+        }
+
+        onScroll() {
+          const scrollY = window.scrollY / window.innerHeight;
+          this.targetRotation.x = scrollY * Math.PI * 0.05;
+        }
+
+        onWindowResize() {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        animate() {
+          requestAnimationFrame(() => this.animate());
+
+          if (this.mixer) {
+            const delta = this.clock.getDelta();
+            this.mixer.update(delta);
+          }
+
+          this.updateModelRotation();
+          this.renderer.render(this.scene, this.camera);
+        }
+      }
+
+      const container = document.getElementById("model-container");
+      const viewer = new ModelViewer(container);
+      viewer.loadModel("/assets/models/1.glb");
+    </script>
+  </body>
+</html>

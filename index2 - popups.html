@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eran Ben Barak</title>
+    <style>
+      /* Reset styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'CustomFont', sans-serif;
+        background-color: black;
+        color: white;
+        overflow: hidden;
+      }
+
+      @font-face {
+        font-family: 'CustomFont';
+        src: url('/assets/fonts/Neoklass-Black.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'PopupFont';
+        src: url('/assets/fonts/Neoklass-Medium.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      #model-container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100vw;
+        height: 100vh;
+        z-index: 1; /* Ensure the 3D model is behind the header but in front of other elements */
+      }
+
+      /* Header styles */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 40px;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000; /* Header stays above the model */
+      }
+
+      .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        position: relative;
+      }
+
+      .header-title {
+        font-size: 20px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: 'CustomFont', sans-serif;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 20px;
+      }
+
+      .button {
+        font-family: 'CustomFont', sans-serif;
+        font-size: 20px;
+        font-weight: bold;
+        color: white;
+        background-color: transparent;
+        border: 1px solid white;
+        text-transform: uppercase;
+        padding: 5px 20px 2px 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .button:hover {
+        color: black;
+        background-color: white;
+        border-color: white;
+      }
+
+      .button.active {
+        color: black;
+        background-color: white;
+        border-color: white;
+      }
+
+      /* Popup styles */
+      .popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(255, 255, 255, 0.9);
+        color: black;
+        padding: 100px; /* Increased padding to 100px as requested */
+        font-family: 'PopupFont', sans-serif;
+        font-size: 16px;
+        letter-spacing: 1px;
+        width: 600px; /* Increased width to match larger padding */
+        text-align: center;
+        display: none;
+        z-index: 2000; /* Popup stays above everything else */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        border-radius: 0; /* Removed rounded corners as requested */
+      }
+
+      .popup.active {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="buttons">
+        <button class="button" data-popup="About text goes here.">About</button>
+      </div>
+      <div class="header-content">
+        <div class="header-title">Eran Ben Barak</div>
+      </div>
+      <div class="buttons">
+        <button class="button" data-popup="Contact text goes here.">Contact</button>
+      </div>
+    </header>
+    <div id="model-container"></div>
+    <div id="popup" class="popup"></div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as THREE from "three";
+      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+      class ModelViewer {
+        constructor(container) {
+          this.scene = new THREE.Scene();
+          this.scene.background = new THREE.Color(0x000000);
+
+          this.camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+          );
+          this.camera.position.set(0, 0, 3);
+
+          this.renderer = new THREE.WebGLRenderer({ antialias: true });
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+          this.renderer.setPixelRatio(window.devicePixelRatio);
+          container.appendChild(this.renderer.domElement);
+
+          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+          this.scene.add(ambientLight);
+
+          const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+          directionalLight.position.set(0, 0, 3); // Lighting from the front
+          this.scene.add(directionalLight);
+
+          window.addEventListener("resize", this.onWindowResize.bind(this));
+
+          this.animate();
+        }
+
+        onWindowResize() {
+          this.camera.aspect = window.innerWidth / window.innerHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        animate() {
+          requestAnimationFrame(() => this.animate());
+          this.renderer.render(this.scene, this.camera);
+        }
+      }
+
+      const container = document.getElementById("model-container");
+      const viewer = new ModelViewer(container);
+
+      // Popup & button logic
+      const popup = document.getElementById("popup");
+      const buttons = document.querySelectorAll(".button");
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const isActive = button.classList.contains("active");
+
+          // Reset all buttons and hide popup
+          buttons.forEach((btn) => btn.classList.remove("active"));
+          popup.classList.remove("active");
+
+          if (!isActive) {
+            // Activate clicked button and show popup
+            button.classList.add("active");
+            popup.textContent = button.getAttribute("data-popup");
+            popup.classList.add("active");
+          }
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!popup.contains(event.target) && !event.target.classList.contains("button")) {
+          popup.classList.remove("active");
+          buttons.forEach((btn) => btn.classList.remove("active"));
+        }
+      });
+    </script>
+  </body>
+</html>
