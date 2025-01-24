@@ -54,7 +54,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 0 40px;
-        background-color: black;
+        background-color: none;
         z-index: 1000;
       }
 
@@ -101,6 +101,12 @@
         border-color: white;
       }
 
+      .button.inverted {
+        color: black;
+        background-color: white;
+        border-color: white;
+      }
+
       /* Footer text */
       .footer-text {
         font-family: 'CustomFontMedium', sans-serif;
@@ -119,6 +125,57 @@
         width: 20px;
         height: 20px;
         cursor: pointer;
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: black;
+        border: 1px solid white;
+        padding: 30px;
+        max-width: 600px;
+        width: 90%;
+        z-index: 2000;
+        box-shadow: none;
+      }
+
+      .modal p {
+        font-family: 'CustomFontMedium', sans-serif;
+        font-size: 16px;
+        margin-bottom: 20px;
+        letter-spacing: 1px;
+      }
+
+      .modal a {
+        color: white;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+      }
+
+      .modal a:hover {
+        color: gray;
+      }
+
+      .close-button {
+        font-family: 'CustomFont', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: transparent;
+        border: 1px solid white;
+        padding: 5px 10px 4px 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .close-button:hover {
+        color: black;
+        background-color: white;
+        border-color: white;
       }
 
       /* Responsive styles */
@@ -146,13 +203,25 @@
       function openContactEmail() {
         window.location.href = "mailto:eransapp@gmail.com";
       }
-    </script>
 
+    function toggleModal() {
+      const modal = document.getElementById('about-modal');
+      const aboutButton = document.querySelector('.button[onclick="toggleModal()"]');
+    
+      if (modal.style.display === 'none' || modal.style.display === '') {
+        modal.style.display = 'block';
+        aboutButton.classList.add('inverted'); // Add inverted style
+      } else {
+        modal.style.display = 'none';
+        aboutButton.classList.remove('inverted'); // Remove inverted style
+      }
+    }
+    </script>
   </head>
   <body>
     <header>
       <div class="buttons">
-        <button class="button">About</button>
+        <button class="button" onclick="toggleModal()">About</button>
       </div>
       <div class="header-content">
         <div class="header-title">Eran Ben Barak</div>
@@ -171,6 +240,24 @@
       class="instagram-logo"
       onclick="window.open('https://www.instagram.com/eranbenbarak/', '_blank')"
     />
+
+    <!-- Modal -->
+    <div id="about-modal" class="modal">
+      <p>
+        Hi! I'm Eran Ben Barak, a freelance type designer originally from Israel, now living in Italy. After spending a couple of years working in Israel, I moved to Switzerland to complete my master’s in type design at ECAL. These days, I work as a freelancer, designing custom typefaces for cultural projects, localizing typefaces to Hebrew, and collaborating with foundries to publish my type designs.
+      </p>
+      <p>
+        Published typefaces:
+        <br />
+        <a href="https://ecal-typefaces.ch/typeface/sticky/" target="_blank">Sticky at ECAL Typeface</a>
+        <br />
+        <a href="https://fontef.com/neoklass" target="_blank">Neoklass at Fontef</a>
+        <br />
+        <a href="https://alefalefalef.co.il/font/olivia-display/" target="_blank">Olivia at AlefAlefAlef</a>
+      </p>
+      <button class="close-button" onclick="toggleModal()">Close</button>
+    </div>
+
     <script type="importmap">
       {
         "imports": {
