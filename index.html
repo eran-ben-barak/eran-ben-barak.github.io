@@ -1,388 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eran Ben Barak</title>
-    <style>
-      /* Reset styles */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eran Ben Barak</title>
+  <style>
+    /* Reset styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-      body {
-        font-family: 'CustomFont', sans-serif;
-        background-color: black;
-        color: white;
-        overflow: hidden;
-      }
+    body {
+      font-family: 'CustomFont', sans-serif;
+      background-color: black;
+      color: white;
+      overflow: hidden;
+    }
 
-      @font-face {
-        font-family: 'CustomFont';
-        src: url('/assets/fonts/Neoklass-Black.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-      }
+    @font-face {
+      font-family: 'CustomFont';
+      src: url('/assets/fonts/Neoklass-Black.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-      @font-face {
-        font-family: 'CustomFontMedium';
-        src: url('/assets/fonts/Neoklass-Medium.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-      }
+    @font-face {
+      font-family: 'CustomFontMedium';
+      src: url('/assets/fonts/Neoklass-Medium.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-      #model-container {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-      }
+    #model-container {
+      position: fixed;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 80%;
+      overflow: hidden;
+    }
 
-      /* Header styles */
-      header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 40px;
-        background-color: black;
-        z-index: 1000;
-      }
+    /* Header styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: black;
+      z-index: 1000;
+    }
 
-      .header-content {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        position: relative;
-      }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      position: relative;
+    }
 
-      .header-title {
-        font-size: 20px;
-        font-weight: bold;
-        text-transform: uppercase;
-        text-align: center;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        font-family: 'CustomFont', sans-serif;
-      }
+    .header-title {
+      font-size: 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'CustomFont', sans-serif;
+    }
 
-      .buttons {
-        display: flex;
-        gap: 20px;
-      }
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
 
-      .button {
-        font-family: 'CustomFont', sans-serif;
-        font-size: 20px;
-        font-weight: bold;
-        color: white;
-        background-color: transparent;
-        border: 1px solid white;
-        text-transform: uppercase;
-        padding: 5px 20px 2px 20px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
+    .button {
+      font-family: 'CustomFont', sans-serif;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background-color: transparent;
+      border: 1px solid white;
+      text-transform: uppercase;
+      padding: 5px 10px 2px 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-      .button:hover {
-        color: black;
-        background-color: white;
-        border-color: white;
-      }
+    .button:hover {
+      color: black;
+      background-color: white;
+      border-color: white;
+    }
 
-      /* Footer text */
-      .footer-text {
-        font-family: 'CustomFontMedium', sans-serif;
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        font-size: 16px;
-        letter-spacing: 1px;
-      }
+    /* Footer text */
+    .footer-text {
+      font-family: 'CustomFontMedium', sans-serif;
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
 
-      /* Instagram logo */
-      .instagram-logo {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-      }
-
-      /* Responsive styles */
-      @media (max-width: 768px) {
-        .header-title {
-          font-size: 16px;
-        }
-
-        .button {
-          font-size: 16px;
-          padding: 5px 15px;
-        }
-
-        .footer-text {
-          font-size: 12px;
-        }
-
-        .instagram-logo {
-          width: 24px;
-          height: 24px;
-        }
-      }
-    </style>
-    <script>
-      function openContactEmail() {
-        window.location.href = "mailto:eransapp@gmail.com";
-      }
-    </script>
-
-  </head>
-  <body>
-    <header>
-      <div class="buttons">
-        <button class="button">About</button>
-      </div>
-      <div class="header-content">
-        <div class="header-title">Eran Ben Barak</div>
-      </div>
-      <div class="buttons">
-        <button class="button" onclick="openContactEmail()">Contact</button>
-      </div>
-    </header>
-    <div id="model-container"></div>
-    <div class="footer-text">
-      Website under construction, more works in the future
+    /* Instagram logo */
+    .instagram-logo {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+  </style>
+  <script>
+    function openContactEmail() {
+      window.location.href = "mailto:eransapp@gmail.com";
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <div class="buttons">
+      <button class="button">About</button>
     </div>
-    <img
-      src="/assets/instagram-logo.svg"
-      alt="Instagram"
-      class="instagram-logo"
-      onclick="window.open('https://www.instagram.com/eranbenbarak/', '_blank')"
-    />
-    <script type="importmap">
-      {
-        "imports": {
-          "three": "https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js",
-          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/"
-        }
+    <div class="header-content">
+      <div class="header-title">Eran Ben Barak</div>
+    </div>
+    <div class="buttons">
+      <button class="button" onclick="openContactEmail()">Contact</button>
+    </div>
+  </header>
+  <div id="model-container"></div>
+  <div class="footer-text">Website under construction, more works in the future</div>
+  <img
+    src="/assets/instagram-logo.svg"
+    alt="Instagram"
+    class="instagram-logo"
+    onclick="window.open('https://www.instagram.com/eranbenbarak/', '_blank')"
+  />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/"
       }
-    </script>
-    <script type="module">
-      import * as THREE from "three";
-      import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-      class ModelViewer {
-        constructor(container) {
-          this.container = container;
-          this.scene = new THREE.Scene();
-          this.scene.background = new THREE.Color(0x000000);
+    class ModelViewer {
+      constructor(container) {
+        this.container = container;
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0x000000);
 
-          this.camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-          );
-          this.camera.position.set(0, 0, 3);
+        this.camera = new THREE.PerspectiveCamera(
+          75,
+          container.offsetWidth / container.offsetHeight,
+          0.1,
+          1000
+        );
+        this.camera.position.set(0, 0, 2);
 
-          this.renderer = new THREE.WebGLRenderer({ antialias: true });
-          this.renderer.setSize(window.innerWidth, window.innerHeight);
-          this.renderer.setPixelRatio(window.devicePixelRatio);
-          this.container.appendChild(this.renderer.domElement);
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setSize(container.offsetWidth, container.offsetHeight);
+        this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.container.appendChild(this.renderer.domElement);
 
-          const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-          this.scene.add(ambientLight);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        this.scene.add(ambientLight);
 
-          const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
-          directionalLight.position.set(0, 4, 4);
-          this.scene.add(directionalLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
+        directionalLight.position.set(0, 2, 2);
+        this.scene.add(directionalLight);
 
-          this.mouse = new THREE.Vector2();
-          this.targetRotation = new THREE.Vector2();
-          this.currentRotation = new THREE.Vector2();
-          this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        this.mouse = new THREE.Vector2();
+        this.targetRotation = new THREE.Vector2();
+        this.currentRotation = new THREE.Vector2();
+        this.isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
-          // Restore device orientation or mouse move event listeners based on device type
-          if (this.isMobile) {
-            window.addEventListener("deviceorientation", this.onDeviceOrientation.bind(this));
-          } else {
-            window.addEventListener("mousemove", this.onMouseMove.bind(this));
-          }
-          window.addEventListener("resize", this.onWindowResize.bind(this));
-
-          this.currentModelIndex = 1;
-          this.mixer = null;
-          this.clock = new THREE.Clock();
-          this.model = null;
-          this.modelGroup = new THREE.Group();
-          this.scene.add(this.modelGroup);
-
-          this.loadNextModel();
-          this.startModelLoop();
-          this.animate();
+        if (this.isMobile) {
+          window.addEventListener("deviceorientation", this.onDeviceOrientation.bind(this));
+        } else {
+          window.addEventListener("mousemove", this.onMouseMove.bind(this));
         }
+        window.addEventListener("resize", this.onWindowResize.bind(this));
 
-        // Easing function (cubic out)
-        easeOutCubic(t) {
-          return 1 - Math.pow(1 - t, 3);
-        }
+        this.currentModelIndex = 1;
+        this.mixer = null;
+        this.clock = new THREE.Clock();
+        this.model = null;
+        this.modelGroup = new THREE.Group();
+        this.scene.add(this.modelGroup);
 
-        onDeviceOrientation(event) {
-          const intensity = 0.005;
-          this.targetRotation.y = event.gamma * intensity;
-          this.targetRotation.x = event.beta * intensity;
-        }
+        this.loadNextModel();
+        this.startModelLoop();
+        this.animate();
+      }
 
-        loadModel(url, onLoad, onError) {
-          const loader = new GLTFLoader();
-          loader.load(
-            url,
-            (gltf) => {
-              const model = gltf.scene;
-              const box = new THREE.Box3().setFromObject(model);
-              const center = box.getCenter(new THREE.Vector3());
-              model.position.set(-center.x, -center.y, -center.z);
+      // Easing function (cubic out)
+      easeOutCubic(t) {
+        return 1 - Math.pow(1 - t, 3);
+      }
 
-              const size = box.getSize(new THREE.Vector3());
-              const scale = 4 / Math.max(size.x, size.y, size.z);
-              model.scale.setScalar(scale);
+      onDeviceOrientation(event) {
+        const intensity = 0.003;
+        this.targetRotation.y = event.gamma * intensity;
+        this.targetRotation.x = event.beta * intensity;
+      }
 
-              model.rotation.order = "XYZ";
-              model.rotation.x = -Math.PI / 2;
-              model.rotation.y = Math.PI;
-              model.rotation.z = Math.PI;
+      loadModel(url, onLoad, onError) {
+        const loader = new GLTFLoader();
+        loader.load(
+          url,
+          (gltf) => {
+            const model = gltf.scene;
+            const box = new THREE.Box3().setFromObject(model);
+            const center = box.getCenter(new THREE.Vector3());
+            model.position.set(-center.x, -center.y, -center.z);
 
-              gltf.scene.traverse((child) => {
-                if (child.isMesh) {
-                  child.castShadow = true;
-                  child.receiveShadow = true;
-                }
-              });
+            const size = box.getSize(new THREE.Vector3());
+            const scale = 3 / Math.max(size.x, size.y, size.z);
+            model.scale.setScalar(scale);
 
-              if (gltf.animations.length) {
-                this.mixer = new THREE.AnimationMixer(gltf.scene);
-                gltf.animations.forEach((clip) =>
-                  this.mixer.clipAction(clip).play()
-                );
+            model.rotation.order = "XYZ";
+            model.rotation.x = -Math.PI / 2;
+            model.rotation.y = Math.PI;
+            model.rotation.z = Math.PI;
+
+            gltf.scene.traverse((child) => {
+              if (child.isMesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
               }
+            });
 
-              onLoad(model);
-            },
-            undefined,
-            (error) => onError(error)
-          );
-        }
-
-        loadNextModel() {
-          const modelUrl = `/assets/models/${this.currentModelIndex}.glb`;
-          this.loadModel(
-            modelUrl,
-            (model) => {
-              this.showModel(model);
-              this.currentModelIndex++;
-            },
-            () => {
-              this.currentModelIndex = 1;
-              this.loadNextModel();
+            if (gltf.animations.length) {
+              this.mixer = new THREE.AnimationMixer(gltf.scene);
+              gltf.animations.forEach((clip) => this.mixer.clipAction(clip).play());
             }
-          );
-        }
 
-        showModel(model) {
-          const oldModel = this.model;
-          this.model = model;
-          this.modelGroup.add(model);
+            onLoad(model);
+          },
+          undefined,
+          (error) => onError(error)
+        );
+      }
 
-          if (oldModel) {
-            const slideOut = new THREE.Vector3(-15, 0, 0);
-            const slideIn = new THREE.Vector3(15, 0, 0);
-            model.position.copy(slideIn);
-
-            const slideDuration = 5;
-            const clock = new THREE.Clock();
-
-            const animateTransition = () => {
-              const elapsedTime = clock.getElapsedTime();
-              const progress = elapsedTime / slideDuration;
-              const easedProgress = this.easeOutCubic(Math.min(progress, 1));
-
-              if (progress < 1) {
-                oldModel.position.lerp(slideOut, easedProgress);
-                model.position.lerp(new THREE.Vector3(0, 0, 0), easedProgress);
-                requestAnimationFrame(animateTransition);
-              } else {
-                this.modelGroup.remove(oldModel);
-              }
-
-              this.renderer.render(this.scene, this.camera);
-            };
-
-            animateTransition();
-          }
-        }
-
-        startModelLoop() {
-          setInterval(() => {
+      loadNextModel() {
+        const modelUrl = `/assets/models/${this.currentModelIndex}.glb`;
+        this.loadModel(
+          modelUrl,
+          (model) => {
+            this.showModel(model);
+            this.currentModelIndex++;
+          },
+          () => {
+            this.currentModelIndex = 1;
             this.loadNextModel();
-          }, 5000);
-        }
-
-        updateModelRotation() {
-          if (!this.modelGroup) return;
-
-          this.currentRotation.y +=
-            (this.targetRotation.y - this.currentRotation.y) * 0.1;
-          this.currentRotation.x +=
-            (this.targetRotation.x - this.currentRotation.x) * 0.1;
-
-          if (this.model) {
-            this.model.rotation.x = -Math.PI / 2 + this.currentRotation.x;
-            this.model.rotation.y = Math.PI + this.currentRotation.y;
           }
-        }
+        );
+      }
 
-        onMouseMove(event) {
-          this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-          this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      showModel(model) {
+        const oldModel = this.model;
+        this.model = model;
+        this.modelGroup.add(model);
 
-          const intensity = 0.1;
-          this.targetRotation.y = this.mouse.x * Math.PI * intensity;
-          this.targetRotation.x = -this.mouse.y * Math.PI * intensity;
-        }
+        if (oldModel) {
+          const slideOut = new THREE.Vector3(-10, 0, 0);
+          const slideIn = new THREE.Vector3(10, 0, 0);
+          model.position.copy(slideIn);
 
-        onWindowResize() {
-          this.camera.aspect = window.innerWidth / window.innerHeight;
-          this.camera.updateProjectionMatrix();
-          this.renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+          const slideDuration = 3;
+          const clock = new THREE.Clock();
 
-        animate() {
-          requestAnimationFrame(() => this.animate());
+          const animateTransition = () => {
+            const elapsedTime = clock.getElapsedTime();
+            const progress = elapsedTime / slideDuration;
+            const easedProgress = this.easeOutCubic(Math.min(progress, 1));
 
-          if (this.mixer) {
-            const delta = this.clock.getDelta();
-            this.mixer.update(delta);
-          }
+            if (progress < 1) {
+              oldModel.position.lerp(slideOut, easedProgress);
+              model.position.lerp(new THREE.Vector3(0, 0, 0), easedProgress);
+              requestAnimationFrame(animateTransition);
+            } else {
+              this.modelGroup.remove(oldModel);
+            }
 
-          this.updateModelRotation();
-          this.renderer.render(this.scene, this.camera);
+            this.renderer.render(this.scene, this.camera);
+          };
+
+          animateTransition();
         }
       }
 
-      const container = document.getElementById("model-container");
-      new ModelViewer(container);
-    </script>
-  </body>
+      startModelLoop() {
+        setInterval(() => {
+          this.loadNextModel();
+        }, 5000);
+      }
+
+      updateModelRotation() {
+        if (!this.modelGroup) return;
+
+        this.currentRotation.y +=
+          (this.targetRotation.y - this.currentRotation.y) * 0.1;
+        this.currentRotation.x +=
+          (this.targetRotation.x - this.currentRotation.x) * 0.1;
+
+        if (this.model) {
+          this.model.rotation.x = -Math.PI / 2 + this.currentRotation.x;
+          this.model.rotation.y = Math.PI + this.currentRotation.y;
+        }
+      }
+
+      onMouseMove(event) {
+        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        const intensity = 0.1;
+        this.targetRotation.y = this.mouse.x * Math.PI * intensity;
+        this.targetRotation.x = -this.mouse.y * Math.PI * intensity;
+      }
+
+      onWindowResize() {
+        this.camera.aspect = this.container.offsetWidth / this.container.offsetHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+      }
+
+      animate() {
+        requestAnimationFrame(() => this.animate());
+
+        if (this.mixer) {
+          const delta = this.clock.getDelta();
+          this.mixer.update(delta);
+        }
+
+        this.updateModelRotation();
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+
+    const container = document.getElementById("model-container");
+    new ModelViewer(container);
+  </script>
+</body>
 </html>
