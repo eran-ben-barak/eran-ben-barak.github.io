@@ -37,7 +37,7 @@
         position: fixed;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -45%);
         width: 100vw;
         height: 100vh;
         overflow: hidden;
@@ -67,7 +67,7 @@
       }
 
       .header-title {
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bold;
         text-transform: uppercase;
         text-align: center;
@@ -84,13 +84,13 @@
 
       .button {
         font-family: "CustomFont", sans-serif;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: bold;
         color: white;
         background-color: transparent;
         border: 1px solid white;
         text-transform: uppercase;
-        padding: 5px 20px 2px 20px;
+        padding: 4px 18px 2px 18px;
         cursor: pointer;
         transition: all 0.3s ease;
       }
@@ -187,9 +187,9 @@
         letter-spacing: 1px;
         justify-content: space-between;
         align-items: center;
-        width: 90dvw;
-        left: 5dvw;
-        right: 5dvw;
+        width: 94dvw;
+        left: 3dvw;
+        right: 3dvw;
         line-height: 1;
       }
 
@@ -342,37 +342,7 @@
 
           // Restore device orientation or mouse move event listeners based on device type
           if (this.isMobile) {
-            // if (
-            //   typeof DeviceOrientationEvent !== "undefined" &&
-            //   typeof DeviceOrientationEvent.requestPermission === "function"
-            // ) {
-            //   DeviceOrientationEvent.requestPermission()
-            //     .then((permissionState) => {
-            //       if (permissionState === "granted") {
-            //         window.addEventListener(
-            //           "deviceorientation",
-            //           this.onDeviceOrientation.bind(this)
-            //         );
-            //       } else {
-            //         alert(
-            //           "Please enable device orientation permission to enjoy the the full site"
-            //         );
-            //       }
-            //     })
-            //     .catch((error) => {
-            //       alert(error);
-            //     });
-            // } else if (typeof DeviceOrientationEvent !== "undefined") {
-            //   // For non-iOS browsers: No permission request needed
-            //   window.addEventListener(
-            //     "deviceorientation",
-            //     this.onDeviceOrientation.bind(this)
-            //   );
-            // } else {
-            //   console.log(
-            //     "DeviceOrientationEvent is not supported on this device."
-            //   );
-            // }
+
             window.addEventListener("touchmove", (event) => {
               const touch = event.touches[0];
               if (touch) {
