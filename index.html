@@ -120,6 +120,119 @@
         font-style: italic;
       }
 
+      /* Skolar Sans Hebrew font faces */
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Th.otf") format("opentype");
+        font-weight: 100;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-ThIt.otf") format("opentype");
+        font-weight: 100;
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Lt.otf") format("opentype");
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-LtIt.otf") format("opentype");
+        font-weight: 300;
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Rg.otf") format("opentype");
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-It.otf") format("opentype");
+        font-weight: 400;
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Me.otf") format("opentype");
+        font-weight: 500;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-MeIt.otf") format("opentype");
+        font-weight: 500;
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Sb.otf") format("opentype");
+        font-weight: 600;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-SbIt.otf") format("opentype");
+        font-weight: 600;
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Bd.otf") format("opentype");
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-BdIt.otf") format("opentype");
+        font-weight: 700;
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Eb.otf") format("opentype");
+        font-weight: 800;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-EbIt.otf") format("opentype");
+        font-weight: 800;
+        font-style: italic;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-Bl.otf") format("opentype");
+        font-weight: 900;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: "Skolar Sans Hebrew";
+        src: url("/assets/fonts/SkolarSansHebrew-BlIt.otf") format("opentype");
+        font-weight: 900;
+        font-style: italic;
+      }
+
       /* Sticky Variable font face */
       @font-face {
         font-family: "StickyVariable";
@@ -608,6 +721,31 @@
       .text-input::placeholder {
         color: var(--placeholder-color, #999); /* Placeholder color controlled by theme */
       }
+
+      /* Skolar Sans Hebrew text input */
+      .skolar-text-input {
+        font-family: "Skolar Sans Hebrew", sans-serif;
+        font-size: 93px;
+        font-weight: 500; /* Default to Medium */
+        font-style: normal;
+        text-align: center;
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 0px 0;
+        line-height: 1;
+        resize: none;
+        overflow: hidden;
+        position: relative;
+        z-index: 1;
+        color: var(--main-color, red); /* Text color controlled by theme */
+      }
+
+      .skolar-text-input::placeholder {
+        color: var(--placeholder-color, #999);
+      }
+
       /* Variable font slider styles */
       .variable-sliders {
         display: flex;
@@ -832,7 +970,8 @@
 
         .text-input,
         .sticky-text-input,
-        .olivia-text-input {
+        .olivia-text-input,
+        .skolar-text-input {
           font-size: 32px;
         }
 
@@ -898,8 +1037,8 @@
         const select = option.closest('.custom-select');
         const button = select.querySelector('.select-button');
         const dropdown = select.querySelector('.select-dropdown');
-        // Select either .text-input (Neoklass) or .olivia-text-input (Olivia)
-        const textInput = select.closest('.tester-line').querySelector('.text-input, .olivia-text-input');
+        // Select either .text-input (Neoklass), .olivia-text-input (Olivia), or .skolar-text-input (Skolar)
+        const textInput = select.closest('.tester-line').querySelector('.text-input, .olivia-text-input, .skolar-text-input');
         
         // Update selected state
         select.querySelectorAll('.select-option').forEach(opt => opt.classList.remove('selected'));
@@ -917,8 +1056,8 @@
       }
 
       function toggleOpenTypeFeature(checkbox, feature) {
-        // Select either .text-input (Neoklass) or .olivia-text-input (Olivia)
-        const textInput = checkbox.closest('.tester-line').querySelector('.text-input, .olivia-text-input');
+        // Select either .text-input (Neoklass), .olivia-text-input (Olivia), or .skolar-text-input (Skolar)
+        const textInput = checkbox.closest('.tester-line').querySelector('.text-input, .olivia-text-input, .skolar-text-input');
         
         checkbox.classList.toggle('checked');
         
@@ -936,8 +1075,8 @@
       }
 
       function updateSize(slider) {
-        // Select either .text-input (Neoklass) or .olivia-text-input (Olivia) or .sticky-text-input (Sticky)
-        const textInput = slider.closest('.tester-line').querySelector('.text-input, .olivia-text-input, .sticky-text-input');
+        // Select either .text-input (Neoklass), .olivia-text-input (Olivia), .sticky-text-input (Sticky), or .skolar-text-input (Skolar)
+        const textInput = slider.closest('.tester-line').querySelector('.text-input, .olivia-text-input, .sticky-text-input, .skolar-text-input');
         const sizeDisplay = slider.closest('.tester-line').querySelector('.size-display');
         const sizePx = parseInt(slider.value);
         const sizePt = Math.round(sizePx * 0.75); // Convert px to pt (1pt = 1.33px approximately)
@@ -1046,7 +1185,7 @@
         document.querySelector('.instagram-logo-v2').src = theme.instagramLogo;
 
         // Update placeholder colors for all text areas
-        document.querySelectorAll('.text-input, .sticky-text-input, .olivia-text-input').forEach(input => {
+        document.querySelectorAll('.text-input, .sticky-text-input, .olivia-text-input, .skolar-text-input').forEach(input => {
             input.style.setProperty('--placeholder-color', theme.placeholderColor);
         });
       }
@@ -1083,6 +1222,18 @@
                 .map(cb => `"${cb.dataset.feature}" 1`);
             if (initialOliviaFeatures.length > 0) {
                 input.style.fontFeatureSettings = initialOliviaFeatures.join(', ');
+            } else {
+                input.style.fontFeatureSettings = 'normal';
+            }
+        });
+
+        // Initialize Skolar Sans Hebrew features
+        document.querySelectorAll('.skolar-text-input').forEach(input => {
+            autoResize(input);
+            const initialSkolarFeatures = Array.from(input.closest('.tester-line').querySelectorAll('.opentype-checkbox.checked'))
+                .map(cb => `"${cb.dataset.feature}" 1`);
+            if (initialSkolarFeatures.length > 0) {
+                input.style.fontFeatureSettings = initialSkolarFeatures.join(', ');
             } else {
                 input.style.fontFeatureSettings = 'normal';
             }
@@ -1186,6 +1337,58 @@
           
           <div class="text-input-container">
             <textarea class="text-input" placeholder="Neoklass נאוקלאס" oninput="autoResize(this)"></textarea>
+          </div>
+        </div>
+
+        <div class="tester-line">
+          <div class="tester-controls">
+            <div class="left-controls">
+              <div class="custom-select">
+                <div class="select-button">Medium</div>
+                <div class="select-dropdown">
+                  <div class="select-option" onclick="selectStyle(this, '100', 'normal', 'Thin')">Thin</div>
+                  <div class="select-option" onclick="selectStyle(this, '100', 'italic', 'Thin Italic')">Thin Italic</div>
+                  <div class="select-option" onclick="selectStyle(this, '300', 'normal', 'Light')">Light</div>
+                  <div class="select-option" onclick="selectStyle(this, '300', 'italic', 'Light Italic')">Light Italic</div>
+                  <div class="select-option" onclick="selectStyle(this, '400', 'normal', 'Regular')">Regular</div>
+                  <div class="select-option" onclick="selectStyle(this, '400', 'italic', 'Italic')">Italic</div>
+                  <div class="select-option selected" onclick="selectStyle(this, '500', 'normal', 'Medium')">Medium</div>
+                  <div class="select-option" onclick="selectStyle(this, '500', 'italic', 'Medium Italic')">Medium Italic</div>
+                  <div class="select-option" onclick="selectStyle(this, '600', 'normal', 'SemiBold')">SemiBold</div>
+                  <div class="select-option" onclick="selectStyle(this, '600', 'italic', 'SemiBold Italic')">SemiBold Italic</div>
+                  <div class="select-option" onclick="selectStyle(this, '700', 'normal', 'Bold')">Bold</div>
+                  <div class="select-option" onclick="selectStyle(this, '700', 'italic', 'Bold Italic')">Bold Italic</div>
+                  <div class="select-option" onclick="selectStyle(this, '800', 'normal', 'ExtraBold')">ExtraBold</div>
+                  <div class="select-option" onclick="selectStyle(this, '800', 'italic', 'ExtraBold Italic')">ExtraBold Italic</div>
+                  <div class="select-option" onclick="selectStyle(this, '900', 'normal', 'Black')">Black</div>
+                  <div class="select-option" onclick="selectStyle(this, '900', 'italic', 'Black Italic')">Black Italic</div>
+                </div>
+              </div>
+              
+              <div class="control-group">
+                <span class="control-label">Size</span>
+                <input type="range" class="size-slider" min="9" max="150" value="93" oninput="updateSize(this)">
+                <span class="size-display">70pt</span>
+              </div>
+            </div>
+            
+            <div class="right-controls">
+              <div class="custom-select opentype-dropdown">
+                <div class="select-button">Features</div>
+                <div class="select-dropdown">
+                  <div class="opentype-option">
+                    <div class="opentype-checkbox" data-feature="ss16" onclick="toggleOpenTypeFeature(this, 'ss16')"></div>
+                    <span>Alt Mem (Italic)</span>
+                  </div>
+                </div>
+              </div>
+              
+              <a href="https://rosettatype.com/SkolarSansHebrew" target="_blank" class="buy-button">Buy</a>
+            </div>
+          </div>
+          
+          <div class="text-input-container">
+            <textarea class="skolar-text-input" placeholder="Skolar Hebrew סקולר עברית" oninput="autoResize(this)"></textarea>
           </div>
         </div>
 
