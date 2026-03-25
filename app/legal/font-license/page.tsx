@@ -16,52 +16,58 @@ export default function LicensePage() {
 
 function LicenseContent() {
   return (
-    <article className="text-editorial" style={{ lineHeight: "1.6" }}>
+    <article className="text-editorial" style={{ lineHeight: "1.7" }}>
       <h1 className="page-title" style={{ fontSize: "2.5rem", marginBottom: "3rem" }}>Font License Agreement (EULA)</h1>
       
-      <p style={{ marginBottom: "2rem" }}>
-        Hey! Thanks for choosing a font from <strong>Eran Ben Barak</strong>. This agreement is simple, friendly, and binding. 
-        It gives you the right to use the font while protecting the work that went into it.
+      <p style={{ marginBottom: "2.5rem" }}>
+        This End User License Agreement (EULA) is a legal agreement between you and <strong>Eran Ben Barak</strong>. 
+        By downloading, installing, or using the Font Software, you confirm that you have read, understood, and agree to be bound by the terms of this agreement.
       </p>
 
-      <section style={{ marginBottom: "2rem" }}>
-        <h2 className="text-meta" style={{ marginBottom: "1rem", opacity: 0.5 }}>What You CAN Do</h2>
-        <ul style={{ paddingInlineStart: "1.5rem" }}>
-          <li><strong>Design Work:</strong> Use the font for logos, branding, posters, packaging, books, and ads.</li>
-          <li><strong>Social Media:</strong> Use it for all your static posts and banners.</li>
-          <li><strong>Video:</strong> Use it for titles and motion graphics in your videos.</li>
-          <li><strong>Web (Studio/Business Tiers):</strong> Embed the font on your website as a "live font" up to your tier’s view limit.</li>
-          <li><strong>Apps (Studio/Business Tiers):</strong> Embed the font files in your mobile or desktop applications.</li>
+      <section style={{ marginBottom: "2.5rem" }}>
+        <h2 className="text-meta" style={{ marginBottom: "1.2rem", opacity: 0.5 }}>1. The License</h2>
+        <p>
+          This is a non-exclusive, non-transferable, and <strong>perpetual</strong> license. You are not purchasing the copyright to the design of the fonts, but rather the right to use the Font Software according to the terms of your purchased license tier.
+        </p>
+      </section>
+
+      <section style={{ marginBottom: "2.5rem" }}>
+        <h2 className="text-meta" style={{ marginBottom: "1.2rem", opacity: 0.5 }}>2. Permitted Usage</h2>
+        <ul style={{ paddingInlineStart: "1.5rem", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+          <li><strong>Installation:</strong> You may install the font on up to <strong>3 devices</strong> (for Solo/Freelance tier) or the number of seats specified in your invoice.</li>
+          <li><strong>Commercial Work:</strong> Use the fonts for logos, branding, print, social media, packaging, and advertising.</li>
+          <li><strong>Third Parties:</strong> You may provide the Font Software to a printer, developer, or other service provider strictly for the production of your own work. They must delete the files once the project is complete.</li>
+          <li><strong>Web (Studio & Business Tiers):</strong> Self-host the fonts using @font-face on your registered domains up to the traffic limit of your tier.</li>
         </ul>
       </section>
 
-      <section style={{ marginBottom: "2rem" }}>
-        <h2 className="text-meta" style={{ marginBottom: "1rem", opacity: 0.5 }}>What You CANNOT Do</h2>
-        <ul style={{ paddingInlineStart: "1.5rem" }}>
-          <li><strong>Don't Share:</strong> Please don't give the font files to colleagues or clients who aren't covered by your seats. They should buy their own copy!</li>
-          <li><strong>Don't Resell:</strong> You can't resell, lease, or redistribute the font files themselves.</li>
-          <li><strong>No AI Training:</strong> You are strictly prohibited from using these font files or their shapes to train AI models or generative algorithms.</li>
-          <li><strong>No Reverse Engineering:</strong> Don't modify the code of the font files or convert them into other formats without permission.</li>
+      <section style={{ marginBottom: "2.5rem" }}>
+        <h2 className="text-meta" style={{ marginBottom: "1.2rem", opacity: 0.5 }}>3. Prohibited Usage</h2>
+        <ul style={{ paddingInlineStart: "1.5rem", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+          <li><strong>No Distribution:</strong> You may not share, lend, rent, or resell the Font Software to any third party not covered by this license.</li>
+          <li><strong>No AI Training:</strong> You are strictly prohibited from using the Font Software, the letterforms, or the underlying data to train machine learning models, neural networks, or generative AI algorithms.</li>
+          <li><strong>No Modification:</strong> You may not rename, modify, or decompile the Font Software. For custom modifications or additional script support, please contact the foundry.</li>
         </ul>
       </section>
 
-      <section style={{ marginBottom: "2rem" }}>
-        <h2 className="text-meta" style={{ marginBottom: "1rem", opacity: 0.5 }}>The Fine Print</h2>
-        <ul style={{ paddingInlineStart: "1.5rem" }}>
-          <li><strong>Ownership:</strong> The intellectual property and copyright remain with Eran Ben Barak.</li>
-          <li><strong>Warranty:</strong> The font is provided "as is". If you find a technical bug, let me know and I'll do my best to fix it!</li>
-          <li><strong>Termination:</strong> If you break these rules, the license is terminated.</li>
+      <section style={{ marginBottom: "2.5rem" }}>
+        <h2 className="text-meta" style={{ marginBottom: "1.2rem", opacity: 0.5 }}>4. Ownership & Liability</h2>
+        <ul style={{ paddingInlineStart: "1.5rem", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+          <li><strong>Intellectual Property:</strong> Eran Ben Barak retains all rights, titles, and intellectual property in the Font Software.</li>
+          <li><strong>Disclaimer:</strong> The Font Software is provided "as is" without warranty of any kind. Licensor is not liable for any damages resulting from the use of the software.</li>
+          <li><strong>Jurisdiction:</strong> This agreement is governed by the laws of <strong>Israel</strong>.</li>
         </ul>
       </section>
 
-      <p style={{ marginTop: "4rem", opacity: 0.7 }}>
-        Questions? Need an upgrade? Drop me a line at <strong>info@eranbenbarak.com</strong>.
-      </p>
-      
-      <p style={{ marginTop: "1rem" }}>
-        <strong>Enjoy your new type!</strong><br />
-        Eran Ben Barak
-      </p>
+      <div style={{ marginTop: "5rem", borderTop: "1.5px solid var(--border-color)", paddingTop: "2rem" }}>
+        <p style={{ opacity: 0.7 }}>
+          Questions or need a license upgrade? Please contact <strong>info@eranbenbarak.com</strong>.
+        </p>
+        <p style={{ marginTop: "1.5rem", fontWeight: 500 }}>
+          Enjoy your new type!<br />
+          Eran Ben Barak
+        </p>
+      </div>
     </article>
   );
 }
