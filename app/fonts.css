@@ -1,0 +1,80 @@
+/* Custom Fonts */
+@font-face { font-family: "CustomFont"; src: url("/assets/fonts/Neoklass-Black.woff2") format("woff2"); font-weight: normal; font-style: normal; }
+@font-face { font-family: "CustomFontMedium"; src: url("/assets/fonts/Neoklass-Medium.woff2") format("woff2"); font-weight: normal; font-style: normal; }
+
+/* Monoklass */
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-Light.otf") format("opentype"); font-weight: 300; font-style: normal; }
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-LightItalic.otf") format("opentype"); font-weight: 300; font-style: italic; }
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-Italic.otf") format("opentype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-Medium.otf") format("opentype"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Monoklass Medium"; src: url("/assets/fonts/Monoklass-Medium.otf") format("opentype"); font-weight: normal; font-style: normal; }
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-MediumItalic.otf") format("opentype"); font-weight: 500; font-style: italic; }
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-Bold.otf") format("opentype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Monoklass"; src: url("/assets/fonts/Monoklass-BoldItalic.otf") format("opentype"); font-weight: 700; font-style: italic; }
+
+/* Neoklass */
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-Thin.woff2") format("woff2"); font-weight: 100; font-style: normal; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-ThinItalic.woff2") format("woff2"); font-weight: 100; font-style: italic; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-Light.woff2") format("woff2"); font-weight: 300; font-style: normal; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-LightItalic.woff2") format("woff2"); font-weight: 300; font-style: italic; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-Medium.woff2") format("woff2"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-MediumItalic.woff2") format("woff2"); font-weight: 500; font-style: italic; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-BoldItalic.woff2") format("woff2"); font-weight: 700; font-style: italic; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-Black.woff2") format("woff2"); font-weight: 900; font-style: normal; }
+@font-face { font-family: "Neoklass"; src: url("/assets/fonts/Neoklass-BlackItalic.woff2") format("woff2"); font-weight: 900; font-style: italic; }
+
+/* Skolar Sans Hebrew */
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Th.otf") format("opentype"); font-weight: 100; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-ThIt.otf") format("opentype"); font-weight: 100; font-style: italic; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Lt.otf") format("opentype"); font-weight: 300; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-LtIt.otf") format("opentype"); font-weight: 300; font-style: italic; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Rg.otf") format("opentype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-It.otf") format("opentype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Me.otf") format("opentype"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-MeIt.otf") format("opentype"); font-weight: 500; font-style: italic; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Sb.otf") format("opentype"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-SbIt.otf") format("opentype"); font-weight: 600; font-style: italic; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Bd.otf") format("opentype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-BdIt.otf") format("opentype"); font-weight: 700; font-style: italic; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Eb.otf") format("opentype"); font-weight: 800; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-EbIt.otf") format("opentype"); font-weight: 800; font-style: italic; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-Bl.otf") format("opentype"); font-weight: 900; font-style: normal; }
+@font-face { font-family: "Skolar Sans Hebrew"; src: url("/assets/fonts/SkolarSansHebrew-BlIt.otf") format("opentype"); font-weight: 900; font-style: italic; }
+
+/* Sticky Variable */
+@font-face { font-family: "StickyVariable"; src: url("/assets/fonts/Sticky-Variable.woff2") format("woff2"); font-weight: 51 111; font-style: oblique -7deg 9deg; }
+
+/* Olivia Display */
+@font-face { font-family: "Olivia Display"; src: url("/assets/fonts/olivia-display-thin.woff2") format("woff2"); font-weight: 100; font-style: normal; }
+@font-face { font-family: "Olivia Display"; src: url("/assets/fonts/olivia-display-light.woff2") format("woff2"); font-weight: 300; font-style: normal; }
+@font-face { font-family: "Olivia Display"; src: url("/assets/fonts/olivia-display-regular.woff2") format("woff2"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Olivia Display"; src: url("/assets/fonts/olivia-display-medium.woff2") format("woff2"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Olivia Display"; src: url("/assets/fonts/olivia-display-demibold.woff2") format("woff2"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Olivia Display"; src: url("/assets/fonts/olivia-display-bold.woff2") format("woff2"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Olivia Display"; src: url("/assets/fonts/olivia-display-ultrabold.woff2") format("woff2"); font-weight: 800; font-style: normal; }
+
+/* Olivia Text */
+@font-face { font-family: "Olivia Text"; src: url("/assets/fonts/olivia-text-light.woff2") format("woff2"); font-weight: 300; font-style: normal; }
+@font-face { font-family: "Olivia Text"; src: url("/assets/fonts/olivia-text-regular.woff2") format("woff2"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Olivia Text"; src: url("/assets/fonts/olivia-text-medium.woff2") format("woff2"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Olivia Text"; src: url("/assets/fonts/olivia-text-demibold.woff2") format("woff2"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Olivia Text"; src: url("/assets/fonts/olivia-text-bold.woff2") format("woff2"); font-weight: 700; font-style: normal; }
+
+/* Wilson */
+@font-face { font-family: "Wilson"; src: url("/assets/fonts/Wilson-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; }
+
+/* Dafna */
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-Light.otf") format("opentype"); font-weight: 300; font-style: normal; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-LightItalic.otf") format("opentype"); font-weight: 300; font-style: italic; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-Regular.otf") format("opentype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-Italic.otf") format("opentype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-Medium.otf") format("opentype"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-MediumItalic.otf") format("opentype"); font-weight: 500; font-style: italic; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-Bold.otf") format("opentype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-BoldItalic.otf") format("opentype"); font-weight: 700; font-style: italic; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-Black.otf") format("opentype"); font-weight: 900; font-style: normal; }
+@font-face { font-family: "Dafna"; src: url("/assets/fonts/Dafna-BlackItalic.otf") format("opentype"); font-weight: 900; font-style: italic; }

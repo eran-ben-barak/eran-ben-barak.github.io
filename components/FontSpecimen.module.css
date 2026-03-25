@@ -1,0 +1,502 @@
+.specimenContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8rem;
+  padding-bottom: 15rem;
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+/* 1. Header */
+.specimenHeader {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.specimenTitle {
+  font-family: inherit;
+  font-size: clamp(4rem, 15vw, 15rem);
+  line-height: 1;
+  margin-bottom: 2rem;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.stickyAnimatedHeadline {
+  font-family: inherit;
+  font-size: clamp(4rem, 15vw, 15rem);
+  line-height: 1;
+  margin-bottom: 2rem;
+  font-weight: 81;
+  text-transform: none;
+  letter-spacing: 0;
+  -webkit-text-stroke: 0;
+  animation: stickyBreath 8s infinite alternate ease-in-out;
+}
+
+@keyframes stickyBreath {
+  0% { font-variation-settings: "wght" 51, "ital" -7; }
+  25% { font-variation-settings: "wght" 81, "ital" 0; }
+  50% { font-variation-settings: "wght" 111, "ital" 9; }
+  75% { font-variation-settings: "wght" 81, "ital" 0; }
+  100% { font-variation-settings: "wght" 51, "ital" 9; }
+}
+
+.specimenTags {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.specimenTag {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1.5px solid var(--border-color);
+  padding: 0.4rem 1.2rem;
+  font-weight: 500;
+  background-color: var(--bg-color);
+}
+
+/* 2. Section Wrappers */
+.sectionWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.sectionHeader {
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.sectionLabel {
+  opacity: 1;
+}
+
+/* RTL Support */
+.rtl .waterfallText {
+  text-align: right;
+}
+
+.rtl .aboutGrid {
+  /* Natural RTL flow: Year (Start/Right), Text (End/Left) */
+  grid-template-columns: auto 1fr;
+}
+
+.rtl .aboutText {
+  text-align: right;
+}
+
+/* 3. Styles Waterfall */
+.stylesWaterfall {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.waterfallItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.waterfallLabel {
+  opacity: 0.5;
+  min-width: 150px;
+}
+
+.waterfallText {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* 4. Combined Showcase */
+.combinedShowcase {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.showcaseBox {
+  border: 2px solid var(--border-color);
+  padding: 3rem;
+}
+
+.showcaseMeta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 2rem;
+  opacity: 0.5;
+  font-family: "Neoklass", sans-serif;
+}
+
+.showcaseInput {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  width: 100%;
+  resize: none;
+  outline: none;
+  line-height: 1.1;
+  padding: 0;
+  overflow: hidden;
+  height: auto;
+  display: block;
+}
+
+/* 6. Character Grid */
+.characterContainer {
+  position: relative;
+}
+
+.characterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  border: 1px solid var(--border-color);
+}
+
+.charBox {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  border: 1px solid var(--border-color);
+  cursor: crosshair;
+  transition: all 0.1s;
+  background-color: var(--bg-color);
+}
+
+.charBox:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  border-color: var(--text-color);
+}
+
+.charPreview {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 3px solid var(--text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+}
+
+.charPreviewInner {
+  font-size: 300px;
+  line-height: 1;
+}
+
+/* 7. About Section */
+.aboutGrid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4rem;
+}
+
+.aboutMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.aboutMetaRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.aboutMetaLabel {
+  opacity: 0.5;
+}
+
+.aboutText {
+  max-width: 800px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .aboutGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .aboutText {
+    max-width: none;
+  }
+  
+  .specimenTitle {
+    font-size: 5rem;
+  }
+  
+  .featuresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .waterfallText {
+    font-size: 2.5rem;
+  }
+
+  .charPreview {
+    width: 250px;
+    height: 250px;
+  }
+
+  .charPreviewInner {
+    font-size: 180px;
+  }
+}
+
+/* Purchase Section */
+.purchaseGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 350px;
+  gap: 4rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.purchaseColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.tierList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tierButton {
+  background: none;
+  border: 1.5px solid var(--border-color);
+  padding: 1.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-color);
+  font-family: var(--font-sans);
+}
+
+.rtl .tierButton {
+  text-align: right;
+}
+
+.tierButton.active {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  border-color: var(--text-color);
+}
+
+.tierHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  width: 100%;
+  font-family: var(--font-sans);
+}
+
+.tierPriceHint {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  font-family: var(--font-sans);
+}
+
+.active .tierPriceHint {
+  opacity: 1;
+}
+
+.tierDesc {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  font-family: var(--font-sans);
+}
+
+.active .tierDesc {
+  opacity: 1;
+}
+
+.weightSelector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.weightButton:first-child {
+  grid-column: span 2;
+}
+
+.weightButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 1.5rem;
+  background: none;
+  border: 1.5px solid var(--border-color);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 0;
+  text-align: left;
+}
+
+.rtl .weightButton {
+  text-align: right;
+}
+
+.weightButton:hover {
+  border-color: var(--text-color);
+}
+
+.weightButton.active {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  border-color: var(--text-color);
+}
+
+.weightButton:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.purchaseSummary {
+  background-color: rgba(245, 245, 247, 0.03);
+  border: 1.5px solid var(--border-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+}
+
+.purchaseSummaryColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.currencyToggle {
+  display: flex;
+  border: 1px solid var(--border-color);
+}
+
+.currencyBtn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--text-color);
+  opacity: 0.4;
+  transition: all 0.2s;
+}
+
+.currencyBtn.active {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  opacity: 1;
+}
+
+.totalContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.priceDisplay {
+  display: flex;
+  flex-direction: column;
+}
+
+.finalPrice {
+  font-size: 3rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-family: var(--font-sans);
+}
+
+.discountBadge {
+  font-size: 0.7rem;
+  color: #ea5025;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
+.buyButton {
+  display: block;
+  width: 100%;
+  padding: 1.2rem;
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  text-align: center;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.buyButton:hover {
+  opacity: 0.9;
+}
+
+.textButton {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.textButton:hover {
+  opacity: 1;
+}
+
+.licenseLink {
+  margin-top: 2rem;
+  opacity: 0.5;
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: opacity 0.2s;
+}
+
+.licenseLink:hover {
+  opacity: 1;
+}
+
+@media (max-width: 1200px) {
+  .purchaseGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  
+  .purchaseSummary {
+    position: static;
+  }
+}

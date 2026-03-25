@@ -1,0 +1,27 @@
+.toggleGroup {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.1s;
+}
+
+.dot.active {
+  transform: scale(1.2);
+  border-width: 2px;
+  border-color: var(--text-color);
+}
+
+.toggleGroupPlaceholder {
+  width: 63px;
+  /* approximate width of the toggle group */
+  height: 24px;
+}
