@@ -275,7 +275,7 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
     if (!isMobile) return;
     const interval = setInterval(() => {
       setCurrentIdx((prev) => (prev + 1) % project.images.length);
-    }, 4000);
+    }, 1500); /* Faster rotation */
     return () => clearInterval(interval);
   }, [isMobile, project.images.length]);
 
@@ -366,25 +366,19 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
         <div className="project-modal-media">
           {isMobile ? (
             <div className="mobile-slideshow-container" style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={`${project.slug}-${currentIdx}`}
-                  src={project.images[currentIdx]}
-                  alt={`${project.slug}-${currentIdx}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 1, ease: "easeInOut" }}
-                  style={{ 
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover"
-                  }}
-                />
-              </AnimatePresence>
+              <img
+                key={`${project.slug}-${currentIdx}`}
+                src={project.images[currentIdx]}
+                alt={`${project.slug}-${currentIdx}`}
+                style={{ 
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover"
+                }}
+              />
             </div>
           ) : (
             <div className="infinite-scroll-wrapper">
