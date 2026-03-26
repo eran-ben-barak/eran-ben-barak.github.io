@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../../context/LanguageContext";
@@ -261,7 +261,24 @@ function DesignCard({ project, onClick, lang }: { project: Project; onClick: () 
 
 function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose: () => void; lang: string; t: (k: string) => string }) {
   const isRTL = lang === "he";
-  
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const interval = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % project.images.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isMobile, project.images.length]);
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -347,45 +364,69 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
         </div>
 
         <div className="project-modal-media">
-          <div className="infinite-scroll-wrapper">
-            <div 
-              key={project.slug}
-              className="infinite-scroll-track"
-              style={{ 
-                animationDuration: `${project.scrollDuration || 60}s`,
-                width: "max-content", /* Hardware acceleration and explicit width */
-                willChange: "transform",
-                backfaceVisibility: "hidden"
-              }}
-            >
-              {[...project.images, ...project.images, ...project.images, ...project.images].map((asset, i) => {
-                const isVideo = asset.toLowerCase().endsWith(".mp4") || asset.toLowerCase().endsWith(".webm");
-                return (
-                  <div key={i} className="infinite-scroll-item">
-                    {isVideo ? (
-                      <video 
-                        src={asset} 
-                        autoPlay 
-                        muted 
-                        loop 
-                        playsInline
-                        style={{ height: "100%", width: "auto", display: "block" }} 
-                        preload="auto"
-                      />
-                    ) : (
-                      <img 
-                        src={asset} 
-                        alt={`${project.slug}-${i}`} 
-                        style={{ height: "100%", width: "auto", display: "block" }} 
-                        loading="eager"
-                        fetchPriority={i < project.images.length ? "high" : "auto"}
-                      />
-                    )}
-                  </div>
-                );
-              })}
+          {isMobile ? (
+            <div className="mobile-slideshow-container" style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={`${project.slug}-${currentIdx}`}
+                  src={project.images[currentIdx]}
+                  alt={`${project.slug}-${currentIdx}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1, ease: "easeInOut" }}
+                  style={{ 
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover"
+                  }}
+                />
+              </AnimatePresence>
             </div>
-          </div>
+          ) : (
+            <div className="infinite-scroll-wrapper">
+              <div 
+                key={project.slug}
+                className="infinite-scroll-track"
+                style={{ 
+                  animationDuration: `${project.scrollDuration || 60}s`,
+                  width: "max-content",
+                  willChange: "transform",
+                  backfaceVisibility: "hidden"
+                }}
+              >
+                {[...project.images, ...project.images, ...project.images, ...project.images].map((asset, i) => {
+                  const isVideo = asset.toLowerCase().endsWith(".mp4") || asset.toLowerCase().endsWith(".webm");
+                  return (
+                    <div key={i} className="infinite-scroll-item">
+                      {isVideo ? (
+                        <video 
+                          src={asset} 
+                          autoPlay 
+                          muted 
+                          loop 
+                          playsInline
+                          style={{ height: "100%", width: "auto", display: "block" }} 
+                          preload="auto"
+                        />
+                      ) : (
+                        <img 
+                          src={asset} 
+                          alt={`${project.slug}-${i}`} 
+                          style={{ height: "100%", width: "auto", display: "block" }} 
+                          loading="eager"
+                          fetchPriority={i < project.images.length ? "high" : "auto"}
+                        />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </motion.div>
     </motion.div>

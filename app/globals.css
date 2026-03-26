@@ -927,9 +927,8 @@ a:hover {
     height: 100dvh !important;
   }
 
-  /* Force animation to run on mobile and ignore touch-induced hover */
-  .infinite-scroll-track {
-    animation-play-state: running !important;
+  .infinite-scroll-item {
+    height: 100dvh !important;
   }
 }
 
