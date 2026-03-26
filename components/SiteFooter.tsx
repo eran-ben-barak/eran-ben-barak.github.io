@@ -5,10 +5,16 @@ export default function SiteFooter() {
   const { t } = useLanguage();
   return (
     <footer className="site-footer" style={{ borderTop: "none", position: "relative", padding: "1.5rem" }}>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
         <p style={{ margin: 0, textAlign: "center", fontSize: '0.9rem' }}>
           © {new Date().getFullYear()} Eran Ben Barak. {t("footer.rights")}
         </p>
+        <div style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <a href="/legal/terms" className="text-meta" style={{ fontSize: '0.7rem', opacity: 0.5 }}>{t("nav.terms")}</a>
+          <a href="/legal/privacy" className="text-meta" style={{ fontSize: '0.7rem', opacity: 0.5 }}>{t("nav.privacy")}</a>
+          <a href="/legal/refund-policy" className="text-meta" style={{ fontSize: '0.7rem', opacity: 0.5 }}>{t("nav.refunds")}</a>
+          <a href="/legal/font-license" className="text-meta" style={{ fontSize: '0.7rem', opacity: 0.5 }}>{t("purchase.license_link")}</a>
+        </div>
       </div>
       <div style={{ position: "absolute", right: "2rem", top: "50%", transform: "translateY(-50%)", display: 'flex', alignItems: 'center' }}>
         <a href="https://instagram.com/eranbenbarak" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', color: 'var(--text-color)', opacity: 0.6, transition: 'opacity 0.2s' }} aria-label="Instagram">

@@ -97,7 +97,10 @@ const DICTIONARY: Record<Language, Record<string, string>> = {
     "purchase.full_family": "Complete Family",
     "purchase.total": "Total",
     "purchase.currency_toggle": "Currency",
-    "purchase.license_link": "View License Terms"
+    "purchase.license_link": "View License Terms",
+    "nav.terms": "Terms of Service",
+    "nav.privacy": "Privacy Policy",
+    "nav.refunds": "Refund Policy"
   },
   he: {
     "header.name": "ערן בן ברק",
@@ -187,7 +190,10 @@ const DICTIONARY: Record<Language, Record<string, string>> = {
     "purchase.full_family": "משפחה מלאה",
     "purchase.total": "סה״כ",
     "purchase.currency_toggle": "מטבע",
-    "purchase.license_link": "תנאי הרישיון"
+    "purchase.license_link": "תנאי הרישיון",
+    "nav.terms": "תנאי שימוש",
+    "nav.privacy": "מדיניות פרטיות",
+    "nav.refunds": "מדיניות החזרים"
   }
 };
 
