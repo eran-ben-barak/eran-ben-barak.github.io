@@ -730,6 +730,7 @@ a:hover {
     left: 0;
     right: 0;
     bottom: 0;
+    height: 100dvh; /* Use dynamic viewport height for mobile */
     background-color: var(--bg-color);
     z-index: 2000;
     flex-direction: column;
@@ -884,6 +885,25 @@ a:hover {
 
   .about-content p {
     font-size: 1.15rem;
+  }
+
+  /* Center Designs Grid on Mobile */
+  .designs-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    justify-content: center !important;
+  }
+
+  /* Slim down Project Modal on Mobile */
+  .project-modal-metadata {
+    display: none !important; /* Hide Year, Category, Collaborators in mobile modal */
+  }
+
+  .project-modal-info {
+    padding: 2.5rem 1.5rem 1.5rem !important;
+  }
+
+  .project-modal-media {
+    height: 70vh !important; /* Allow more space for media */
   }
 }
 

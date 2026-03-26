@@ -112,11 +112,12 @@ export function DesignsClient() {
           </motion.h1>
         </div>
 
-        <div style={{ 
+        <div className="designs-grid" style={{ 
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))",
           gap: "2.5rem",
-          alignItems: "start"
+          alignItems: "start",
+          justifyContent: "center" /* Center the grid items */
         }}>
           {projects.map((project) => (
             <DesignCard 
@@ -306,7 +307,7 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
               {t(project.titleKey)}
             </h2>
             
-            <div className="text-meta" style={{ 
+            <div className="project-modal-metadata text-meta" style={{ 
               display: "flex",
               flexDirection: "column",
               gap: "0.8rem",

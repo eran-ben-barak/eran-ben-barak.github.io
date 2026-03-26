@@ -254,7 +254,7 @@
   }
   
   .specimenTitle, .stickyAnimatedHeadline {
-    font-size: clamp(3rem, 18vw, 6rem);
+    font-size: clamp(2.5rem, 15vw, 5rem); /* More aggressive title scaling */
     margin-bottom: 1.5rem;
   }
   
@@ -279,9 +279,17 @@
   }
 
   .waterfallText {
-    font-size: clamp(1.8rem, 10vw, 3rem);
+    font-size: clamp(1.5rem, 8vw, 2.5rem); /* Smaller waterfall text */
     white-space: normal;
-    word-break: break-all;
+    word-break: break-word; /* Better wrapping */
+  }
+
+  .showcaseBox {
+    padding: 1.5rem; /* Reduced padding for mobile type tester */
+  }
+
+  .finalPrice {
+    font-size: 2rem; /* Scaled down price */
   }
 
   .characterGrid {
