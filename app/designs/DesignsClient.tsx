@@ -349,6 +349,7 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
         <div className="project-modal-media">
           <div className="infinite-scroll-wrapper">
             <div 
+              key={project.slug}
               className="infinite-scroll-track"
               style={{ animationDuration: `${project.scrollDuration || 60}s` }}
             >

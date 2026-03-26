@@ -926,6 +926,11 @@ a:hover {
   .infinite-scroll-item {
     height: 100dvh !important;
   }
+
+  /* Force animation to run on mobile and ignore touch-induced hover */
+  .infinite-scroll-track {
+    animation-play-state: running !important;
+  }
 }
 
 .project-modal-title-overlay {
@@ -947,8 +952,10 @@ a:hover {
   white-space: nowrap;
 }
 
-.infinite-scroll-track:hover {
-  animation-play-state: paused;
+@media (hover: hover) {
+  .infinite-scroll-track:hover {
+    animation-play-state: paused;
+  }
 }
 
 .infinite-scroll-item {
