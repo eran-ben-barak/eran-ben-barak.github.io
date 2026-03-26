@@ -145,6 +145,22 @@ a:hover {
   right: 0;
 }
 
+/* Mobile Close Button Fix (for notches/safe areas) */
+@media (max-width: 950px) {
+  .modal-close-mobile {
+    position: fixed !important;
+    top: env(safe-area-inset-top, 0) !important;
+    left: 0 !important;
+    z-index: 4000 !important;
+    background-color: var(--bg-color) !important;
+  }
+  
+  [dir="rtl"] .modal-close-mobile {
+    left: auto !important;
+    right: 0 !important;
+  }
+}
+
 @media (max-width: 950px) {
   .project-modal-grid {
     grid-template-columns: 1fr !important;
@@ -445,24 +461,38 @@ a:hover {
 
 .font-card-meta {
   display: flex;
+  flex-wrap: wrap; /* Ensure tags wrap on mobile */
   gap: 0.5rem;
   margin-bottom: 1rem;
+  justify-content: center; /* Center tags for the card layout */
 }
 
-.font-card-category,
-.font-card-script {
+.font-card-tag {
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  border: 1px solid var(--border-color);
+  letter-spacing: 0.05em;
+  border: 1.5px solid var(--border-color);
   padding: 0.3rem 0.8rem;
   color: var(--text-color);
+  background-color: transparent;
+  transition: all 0.2s ease;
 }
 
-.font-card:hover .font-card-category,
-.font-card:hover .font-card-script {
+.tag-special {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.font-card:hover .font-card-tag {
   border-color: var(--bg-color);
   color: var(--bg-color);
+}
+
+.font-card:hover .tag-special {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border-color: var(--bg-color);
 }
 
 .font-card h2,
@@ -708,6 +738,7 @@ a:hover {
     visibility: hidden;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     transform: translateY(-20px);
+    overflow-y: auto; /* Ensure menu is scrollable if content overflows */
   }
 
   .mobile-menu-overlay.active {
@@ -744,8 +775,17 @@ a:hover {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
-    height: 64px;
+    height: auto;
+    min-height: 64px;
     grid-template-columns: none; /* Break the grid for mobile flex */
+  }
+
+  /* Compact Logo for mobile */
+  .logo-btn {
+    padding: 0.4rem 0.75rem !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   /* Hamburger Button */

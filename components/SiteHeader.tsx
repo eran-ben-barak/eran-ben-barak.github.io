@@ -101,7 +101,7 @@ export default function SiteHeader() {
       </button>
 
       {/* Mobile Overlay Menu */}
-      <div className={`mobile-menu-overlay ${isMenuOpen ? "active" : ""}`} dir={isRTL ? "rtl" : "ltr"}>
+      <div className={`mobile-menu-overlay ${isMenuOpen ? "active" : ""}`} dir={isRTL ? "rtl" : "ltr"} style={{ backgroundColor: 'var(--bg-color)' }}>
         <nav className="mobile-nav-links">
           <Link href="/fonts" className="mobile-nav-item" onClick={closeMenu}>{t("nav.fonts")}</Link>
           <Link href="/designs" className="mobile-nav-item" onClick={closeMenu}>{t("nav.designs")}</Link>

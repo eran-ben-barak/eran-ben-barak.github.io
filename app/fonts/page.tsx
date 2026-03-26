@@ -128,16 +128,7 @@ export default function FontsIndex() {
                   return (
                     <span 
                       key={tag} 
-                      className="text-meta"
-                      style={{
-                        padding: "0.3rem 0.8rem",
-                        border: "1.5px solid var(--border-color)",
-                        backgroundColor: isSpecialTag ? "var(--text-color)" : "transparent",
-                        color: isSpecialTag ? "var(--bg-color)" : "inherit",
-                        fontSize: "0.75rem",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.05em"
-                      }}
+                      className={`font-card-tag ${isSpecialTag ? "tag-special" : ""}`}
                     >
                       {t(tagKey)}
                     </span>
