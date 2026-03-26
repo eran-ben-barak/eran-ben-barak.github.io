@@ -351,7 +351,12 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
             <div 
               key={project.slug}
               className="infinite-scroll-track"
-              style={{ animationDuration: `${project.scrollDuration || 60}s` }}
+              style={{ 
+                animationDuration: `${project.scrollDuration || 60}s`,
+                width: "max-content", /* Hardware acceleration and explicit width */
+                willChange: "transform",
+                backfaceVisibility: "hidden"
+              }}
             >
               {[...project.images, ...project.images, ...project.images, ...project.images].map((asset, i) => {
                 const isVideo = asset.toLowerCase().endsWith(".mp4") || asset.toLowerCase().endsWith(".webm");
@@ -365,12 +370,15 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
                         loop 
                         playsInline
                         style={{ height: "100%", width: "auto", display: "block" }} 
+                        preload="auto"
                       />
                     ) : (
                       <img 
                         src={asset} 
                         alt={`${project.slug}-${i}`} 
                         style={{ height: "100%", width: "auto", display: "block" }} 
+                        loading="eager"
+                        fetchPriority={i < project.images.length ? "high" : "auto"}
                       />
                     )}
                   </div>

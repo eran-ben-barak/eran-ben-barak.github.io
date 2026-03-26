@@ -950,6 +950,10 @@ a:hover {
   display: flex;
   animation: scroll 60s linear infinite;
   white-space: nowrap;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 @media (hover: hover) {
@@ -964,11 +968,12 @@ a:hover {
   width: auto;
   position: relative;
   background-color: transparent;
+  transform: translate3d(0, 0, 0);
 }
 
 @keyframes scroll {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 [dir="rtl"] .infinite-scroll-track {
