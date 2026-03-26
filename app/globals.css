@@ -894,17 +894,42 @@ a:hover {
   }
 
   /* Slim down Project Modal on Mobile */
-  .project-modal-metadata {
-    display: none !important; /* Hide Year, Category, Collaborators in mobile modal */
+  .project-modal-metadata,
+  .project-modal-info {
+    display: none !important; /* Completely hide description and metadata on mobile */
   }
 
-  .project-modal-info {
-    padding: 2.5rem 1.5rem 1.5rem !important;
+  .project-modal-title-overlay {
+    display: block !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 3rem 1.5rem 1.5rem;
+    z-index: 10;
+    background: linear-gradient(to top, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0) 100%);
+    color: #F5F5F7;
+    pointer-events: none;
+  }
+
+  .project-modal-grid {
+    display: block !important;
+    height: 100dvh !important;
+    border: none !important;
   }
 
   .project-modal-media {
-    height: 70vh !important; /* Allow more space for media */
+    height: 100dvh !important; /* Full screen media on mobile */
+    padding: 0 !important;
   }
+
+  .infinite-scroll-item {
+    height: 100dvh !important;
+  }
+}
+
+.project-modal-title-overlay {
+  display: none;
 }
 
 /* Infinite Auto-Scroll Gallery */

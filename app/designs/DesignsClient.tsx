@@ -299,6 +299,14 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
         >
           ✕
         </button>
+
+        {/* Mobile-only Title Overlay */}
+        <div className="project-modal-title-overlay">
+          <h2 style={{ fontSize: "1.5rem", margin: 0 }}>
+            {t(project.titleKey)}
+          </h2>
+        </div>
+
         <div 
           className="project-modal-info"
         >
