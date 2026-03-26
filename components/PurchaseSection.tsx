@@ -39,13 +39,8 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
   const totalPrice = basePrice * numSelected;
 
   const toggleWeight = (w: number) => {
-    if (selectedWeights.includes(w)) {
-      if (selectedWeights.length > 1) {
-        setSelectedWeights(selectedWeights.filter(id => id !== w));
-      }
-    } else {
-      setSelectedWeights([...selectedWeights, w]);
-    }
+    // If we click a single weight, we only want that weight selected
+    setSelectedWeights([w]);
   };
 
   const selectAll = () => setSelectedWeights(weights.map(w => w.weight));
@@ -148,7 +143,7 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
               <span className="text-meta" style={{ opacity: 0.5 }}>{t("purchase.total")}</span>
               <span className="text-meta" style={{ fontSize: "0.75rem", opacity: 0.5 }}>
-                {numSelected} {numSelected === 1 ? t("fonts.styles_count_single").toLowerCase() : t("specimen.styles").toLowerCase()}
+                {numSelected === 1 && lang === "he" ? t("fonts.styles_count_single") : `${numSelected} ${numSelected === 1 ? t("fonts.styles_count_single").toLowerCase() : t("specimen.styles").toLowerCase()}`}
               </span>
             </div>
             <div className={styles.priceDisplay}>
@@ -163,6 +158,11 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
                   {CURRENCY_SYMBOLS[currency]}{totalPrice.toLocaleString()}
                 </motion.span>
               </AnimatePresence>
+              {(currency === "USD" || currency === "EUR") && (
+                <span className="text-meta" style={{ fontSize: "0.65rem", opacity: 0.5, marginTop: "0.5rem", textTransform: "none" }}>
+                  * Prices are approximate and may vary at checkout due to currency conversion.
+                </span>
+              )}
             </div>
           </div>
 

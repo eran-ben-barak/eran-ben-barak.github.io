@@ -234,6 +234,15 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .specimenContainer {
+    gap: 4rem;
+    padding-bottom: 8rem;
+  }
+
+  .specimenHeader {
+    padding: 1rem 0;
+  }
+
   .aboutGrid {
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -241,27 +250,71 @@
 
   .aboutText {
     max-width: none;
+    font-size: 1.1rem;
   }
   
-  .specimenTitle {
-    font-size: 5rem;
+  .specimenTitle, .stickyAnimatedHeadline {
+    font-size: clamp(3rem, 18vw, 6rem);
+    margin-bottom: 1.5rem;
   }
   
+  .specimenTags {
+    margin-bottom: 1rem !important;
+  }
+
   .featuresGrid {
     grid-template-columns: 1fr;
   }
 
+  .waterfallItem {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.25rem 0;
+  }
+
+  .waterfallLabel {
+    min-width: unset;
+    font-size: 0.7rem;
+  }
+
   .waterfallText {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 10vw, 3rem);
+    white-space: normal;
+    word-break: break-all;
+  }
+
+  .characterGrid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  }
+
+  .charBox {
+    font-size: 1.5rem;
   }
 
   .charPreview {
-    width: 250px;
-    height: 250px;
+    display: none !important; /* Disable hover preview on mobile/touch */
   }
 
-  .charPreviewInner {
-    font-size: 180px;
+  .purchaseGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .weightSelector {
+    grid-template-columns: 1fr;
+  }
+
+  .weightButton:first-child {
+    grid-column: span 1;
+  }
+
+  .weightButton {
+    padding: 0.85rem 1.25rem;
+  }
+
+  .finalPrice {
+    font-size: 2.5rem;
   }
 }
 
@@ -381,6 +434,10 @@
   opacity: 0.5;
 }
 
+.weightButton.active:disabled {
+  opacity: 1;
+}
+
 .purchaseSummary {
   background-color: rgba(245, 245, 247, 0.03);
   border: 1.5px solid var(--border-color);
@@ -451,17 +508,19 @@
   padding: 1.2rem;
   background-color: var(--text-color);
   color: var(--bg-color);
+  border: 1.5px solid var(--text-color);
   text-align: center;
   text-decoration: none;
   font-weight: 500;
-  transition: opacity 0.2s;
+  transition: all 0.2s;
   font-family: var(--font-sans);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .buyButton:hover {
-  opacity: 0.9;
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
 }
 
 .textButton {
@@ -490,13 +549,25 @@
   opacity: 1;
 }
 
+
 @media (max-width: 1200px) {
   .purchaseGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 3rem;
   }
   
   .purchaseSummary {
     position: static;
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 950px) {
+  .purchaseGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .purchaseSummary {
+    grid-column: span 1;
   }
 }

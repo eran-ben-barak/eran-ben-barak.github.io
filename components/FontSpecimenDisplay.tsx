@@ -249,14 +249,84 @@ export default function FontSpecimenDisplay({ font }: FontSpecimenProps) {
         </div>
       </div>
 
-      {/* 6. Purchase Section (Olivia Only) */}
-      {(font.family.toLowerCase().includes("olivia")) && (
-        <PurchaseSection 
-          slug={font.family.toLowerCase().replace("'", "").replace("'", "").replace(" ", "-")}
-          fontName={font.name}
-          weights={font.weights}
-        />
-      )}
+      {/* 6. Purchase or External Link Section */}
+      {(() => {
+        const familyLower = font.family.toLowerCase();
+        
+        // Olivia Fonts (Internal Purchase)
+        if (familyLower.includes("olivia")) {
+          return (
+            <PurchaseSection 
+              slug={font.family.toLowerCase().replace(/'/g, "").replace(/ /g, "-")}
+              fontName={font.name}
+              weights={font.weights}
+            />
+          );
+        }
+
+        // External Link Fonts
+        const externalLinks: Record<string, { text: string; link: string }> = {
+          neoklass: { 
+            text: "NeoKlass is sold at Fontef. For trial version and purchasing ->", 
+            link: "https://fontef.com/neoklass" 
+          },
+          stickyvariable: { 
+            text: "Sticky is sold at ECAL Typefaces. For trial version and purchasing ->", 
+            link: "https://ecal-typefaces.ch/" 
+          },
+          wilson: { 
+            text: "Wilson is sold at Type Department. For trial version and purchasing ->", 
+            link: "https://type-department.com/products/wilson?_pos=1&_psq=wilson&_ss=e&_v=1.0" 
+          },
+          "'skolar sans hebrew'": { 
+            text: "Skolar Sans Hebrew is sold at Rosetta Type. For trial version and purchasing ->", 
+            link: "https://www.rosettatype.com/SkolarSansHebrew" 
+          }
+        };
+
+        const external = externalLinks[familyLower];
+        if (external) {
+          return (
+            <div className={styles.sectionWrapper}>
+              <div className={styles.sectionHeader}>
+                <span className={`${styles.sectionLabel} text-meta`}>{t("purchase.title")}</span>
+              </div>
+              <div className={styles.aboutGrid} style={{ alignItems: "center" }}>
+                <div className="text-editorial" style={{ margin: 0 }}>
+                  {external.text}
+                </div>
+                <div>
+                  <a 
+                    href={external.link} 
+                    className={styles.buyButton} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ width: "auto", display: "inline-block", padding: "1rem 3rem" }}
+                  >
+                    {t("purchase.buy_now")}
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+        // In Process Fonts
+        if (font.tags.includes("In process")) {
+          return (
+            <div className={styles.sectionWrapper}>
+              <div className={styles.sectionHeader}>
+                <span className={`${styles.sectionLabel} text-meta`}>{t("purchase.title")}</span>
+              </div>
+              <div className="text-editorial">
+                In Process. Will be available in the near future.
+              </div>
+            </div>
+          );
+        }
+
+        return null;
+      })()}
 
       {/* 7. About Section */}
       {(font.aboutInfo || font.hebrewAboutInfo) && (

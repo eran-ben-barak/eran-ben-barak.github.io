@@ -1,15 +1,22 @@
 .heroContainer {
-  height: 80vh; /* More height to allow centering */
+  height: 80vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 5% 20vh; /* Increased bottom padding to rise text just a bit */
+  padding: 0 5% 20vh;
   position: relative;
   width: 100%;
 }
 
+@media (max-width: 768px) {
+  .heroContainer {
+    padding: 0 10% 15vh;
+    height: 70vh;
+  }
+}
+
 .terminalTitle {
-  margin-left: 1rem; /* Matches the 1rem padding inside the header logo */
+  margin-left: 1rem;
   position: relative;
 }
 
@@ -21,10 +28,10 @@
   opacity: 0.8;
 }
 
-/* RTL adjustment for hanging prompt and margin */
+/* RTL adjustment */
 :global([dir="rtl"]) .terminalTitle {
   margin-left: 0;
-  margin-right: 1rem;
+  margin-right: 1.2rem;
 }
 
 :global([dir="rtl"]) .prompt {
@@ -38,7 +45,7 @@
 .title {
   font-family: var(--font-monoklass), monospace;
   font-weight: 700;
-  font-size: clamp(1.8rem, 5vw, 4rem);
+  font-size: clamp(1.4rem, 6vw, 4rem);
   line-height: 1.2;
   margin: 0;
   width: 100%;

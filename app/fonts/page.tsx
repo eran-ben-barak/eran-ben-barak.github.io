@@ -111,12 +111,20 @@ export default function FontsIndex() {
       
       <div className="fonts-grid">
         {ALL_FONTS.map((font) => {
-          const isExternal = font.slug === "skolar-sans-hebrew";
+          const isSkolar = font.slug === "skolar-sans-hebrew";
+          const tagsToShow = isSkolar ? font.tags.filter(tag => tag === "Collaboration") : font.tags;
+          
           const CardContent = (
-            <div className="font-card-inner" dir={isRTL ? "rtl" : "ltr"}>
+            <div 
+              className="font-card-inner" 
+              dir={isRTL ? "rtl" : "ltr"}
+              style={isSkolar ? { minHeight: "170px", padding: "1rem 3rem" } : {}}
+            >
               <div className="font-card-meta">
-                {font.tags.map(tag => {
+                {tagsToShow.map(tag => {
                   const tagKey = `tag.${tag.toLowerCase().replace(/\s\+\s/g, "_").replace(/\s/g, "-")}`;
+                  const isSpecialTag = tag === "Collaboration" || tag === "In process";
+                  
                   return (
                     <span 
                       key={tag} 
@@ -124,8 +132,8 @@ export default function FontsIndex() {
                       style={{
                         padding: "0.3rem 0.8rem",
                         border: "1.5px solid var(--border-color)",
-                        backgroundColor: (tag === "Collaboration" || tag === "In process") ? "var(--text-color)" : "transparent",
-                        color: (tag === "Collaboration" || tag === "In process") ? "var(--bg-color)" : "inherit",
+                        backgroundColor: isSpecialTag ? "var(--text-color)" : "transparent",
+                        color: isSpecialTag ? "var(--bg-color)" : "inherit",
                         fontSize: "0.75rem",
                         textTransform: "uppercase",
                         letterSpacing: "0.05em"
@@ -136,23 +144,32 @@ export default function FontsIndex() {
                   );
                 })}
               </div>
-              <div className="font-preview" style={{ fontFamily: font.family, fontWeight: font.previewWeight }}>
+              <div 
+                className="font-preview" 
+                style={{ 
+                  fontFamily: font.family, 
+                  fontWeight: font.previewWeight,
+                  fontSize: isSkolar ? "clamp(1.8rem, 4.8vw, 3.6rem)" : undefined 
+                }}
+              >
                 {font.hebrewName ? `${font.name} ${font.hebrewName}` : font.name}
               </div>
-              <div className="font-card-info text-meta" style={{ opacity: 0.8 }}>
-                {isRTL ? font.hebrewStylesInfo : font.stylesInfo}
-              </div>
+              {!isSkolar && (
+                <div className="font-card-info text-meta" style={{ opacity: 0.8 }}>
+                  {isRTL ? font.hebrewStylesInfo : font.stylesInfo}
+                </div>
+              )}
             </div>
           );
 
-          if (isExternal) {
+          if (isSkolar) {
             return (
               <a 
                 key={font.slug} 
                 href="https://www.rosettatype.com/SkolarSansHebrew" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="font-card"
+                className="font-card font-card-inverted"
               >
                 {CardContent}
               </a>
