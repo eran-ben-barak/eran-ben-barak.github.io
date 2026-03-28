@@ -26,6 +26,11 @@ const CURRENCY_SYMBOLS = {
   EUR: "€",
 };
 
+const PRODUCT_MAPPING: Record<string, string> = {
+  "olivia-display": "329694cd-6d8c-470c-aff6-738dd74ebb77",
+  "olivia-text": "0f603866-79af-4f23-b079-a7746d12d235",
+};
+
 export default function PurchaseSection({ slug, fontName, weights }: PurchaseSectionProps) {
   const { t, lang } = useLanguage();
   const [tier, setTier] = useState<Tier>("solo");
@@ -34,18 +39,20 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
   
   const isRTL = lang === "he";
   const numSelected = selectedWeights.length;
+  const isFullFamily = numSelected === weights.length;
   
   const basePrice = PRICES[currency][tier];
-  const totalPrice = basePrice * numSelected;
+  const totalPrice = isFullFamily ? Math.round(basePrice * numSelected * 0.75) : (basePrice * numSelected);
 
   const toggleWeight = (w: number) => {
     // If we click a single weight, we only want that weight selected
     setSelectedWeights([w]);
   };
 
-  const selectAll = () => setSelectedWeights(weights.map(w => w.weight));
-
-  const buyUrl = `https://eranbenbarak.lemonsqueezy.com/checkout/buy/${slug}-${tier}?currency=${currency}`;
+  const selectAll = () => setSelectedWeights(weights.map(w => w.weight));  const productId = PRODUCT_MAPPING[slug];
+  const buyUrl = productId 
+    ? `https://eranbenbarak.lemonsqueezy.com/checkout/buy/${productId}?currency=${currency}`
+    : `https://eranbenbarak.lemonsqueezy.com/`;
 
   return (
     <div className={styles.sectionWrapper} id="purchase">
@@ -97,7 +104,7 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
           
           <div className={styles.weightSelector}>
             <button
-              className={`${styles.weightButton} ${numSelected === weights.length ? styles.active : ""}`}
+              className={`${styles.weightButton} ${isFullFamily ? styles.active : ""}`}
               onClick={selectAll}
             >
               <span className="text-meta">{t("purchase.full_family")}</span>
@@ -127,56 +134,63 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
             <h3 className="text-meta" style={{ opacity: 0 }}>Summary</h3>
           </div>
           <div className={styles.purchaseSummary}>
-          <div className={styles.currencyToggle}>
-            {(["NIS", "USD", "EUR"] as Currency[]).map(c => (
-              <button 
-                key={c} 
-                className={`${styles.currencyBtn} ${currency === c ? styles.active : ""}`}
-                onClick={() => setCurrency(c)}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
-
-          <div className={styles.totalContainer}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-              <span className="text-meta" style={{ opacity: 0.5 }}>{t("purchase.total")}</span>
-              <span className="text-meta" style={{ fontSize: "0.75rem", opacity: 0.5 }}>
-                {numSelected === 1 && lang === "he" ? t("fonts.styles_count_single") : `${numSelected} ${numSelected === 1 ? t("fonts.styles_count_single").toLowerCase() : t("specimen.styles").toLowerCase()}`}
-              </span>
-            </div>
-            <div className={styles.priceDisplay}>
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={`${totalPrice}-${currency}`}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className={styles.finalPrice}
+            <div className={styles.currencyToggle}>
+              {(["NIS", "USD", "EUR"] as Currency[]).map(c => (
+                <button 
+                  key={c} 
+                  className={`${styles.currencyBtn} ${currency === c ? styles.active : ""}`}
+                  onClick={() => setCurrency(c)}
                 >
-                  {CURRENCY_SYMBOLS[currency]}{totalPrice.toLocaleString()}
-                </motion.span>
-              </AnimatePresence>
-              {(currency === "USD" || currency === "EUR") && (
-                <span className="text-meta" style={{ fontSize: "0.65rem", opacity: 0.5, marginTop: "0.5rem", textTransform: "none" }}>
-                  * Prices are approximate and may vary at checkout due to currency conversion.
-                </span>
-              )}
+                  {c}
+                </button>
+              ))}
             </div>
-          </div>
 
-          <a 
-            href={buyUrl}
-            className={styles.buyButton}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t("purchase.buy_now")}
-          </a>
+            <div className={styles.totalContainer}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                <span className="text-meta" style={{ opacity: 0.5 }}>{t("purchase.total")}</span>
+                <span className="text-meta" style={{ fontSize: "0.75rem", opacity: 0.5 }}>
+                  {numSelected === 1 && lang === "he" ? t("fonts.styles_count_single") : `${numSelected} ${numSelected === 1 ? t("fonts.styles_count_single").toLowerCase() : t("specimen.styles").toLowerCase()}`}
+                </span>
+              </div>
+              <div className={styles.priceDisplay}>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={`${totalPrice}-${currency}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    className={styles.finalPrice}
+                  >
+                    {CURRENCY_SYMBOLS[currency]}{totalPrice.toLocaleString()}
+                  </motion.span>
+                </AnimatePresence>
+                
+                {isFullFamily && (
+                  <span className={styles.discountDisclaimer}>
+                    {t("purchase.full_family_discount_disclaimer")}
+                  </span>
+                )}
+
+                {(currency === "USD" || currency === "EUR") && (
+                  <span className="text-meta" style={{ fontSize: "0.65rem", opacity: 0.5, marginTop: "0.5rem", textTransform: "none" }}>
+                    * Prices are approximate and may vary at checkout due to currency conversion.
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <a 
+              href={buyUrl}
+              className={styles.buyButton}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("purchase.buy_now")}
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   );
 }

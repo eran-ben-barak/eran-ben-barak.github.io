@@ -2,7 +2,7 @@
 
 import { useLanguage } from "../../context/LanguageContext";
 import { motion } from "framer-motion";
-import PageTransition, { titleVariants } from "../../components/PageTransition";
+import PageTransition from "../../components/PageTransition";
 
 export function AboutClient() {
   const { t, lang } = useLanguage();
@@ -17,12 +17,9 @@ export function AboutClient() {
         <div className="about-layout">
           <div className="about-content-col">
             <div className="page-header-container" dir={isRTL ? "rtl" : "ltr"}>
-              <motion.h1 
-                className="page-title"
-                variants={titleVariants}
-              >
+              <h1 className="page-title">
                 {t("about.page_title")}
-              </motion.h1>
+              </h1>
             </div>
           
           <div className="about-content text-editorial">
@@ -66,12 +63,7 @@ export function AboutClient() {
           </div>
         </div>
 
-        <motion.div 
-          className="about-photo-col"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-        >
+        <div className="about-photo-col">
           <div className="about-photo-placeholder">
             <img 
               src="/images/about/eran-portrait.jpg" 
@@ -79,7 +71,7 @@ export function AboutClient() {
               style={{ width: "100%", height: "auto" }}
             />
           </div>
-        </motion.div>
+        </div>
       </div>
     </motion.section>
     </PageTransition>

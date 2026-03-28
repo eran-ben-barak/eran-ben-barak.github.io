@@ -955,11 +955,6 @@ a:hover {
   perspective: 1000px;
 }
 
-@media (hover: hover) {
-  .infinite-scroll-track:hover {
-    animation-play-state: paused;
-  }
-}
 
 .infinite-scroll-item {
   flex: 0 0 auto;

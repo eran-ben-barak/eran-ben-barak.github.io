@@ -2,7 +2,6 @@
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
-import SoundEngine from "./SoundEngine";
 import { useLanguage } from "../context/LanguageContext";
 import { useState, useEffect } from "react";
 
@@ -74,7 +73,6 @@ export default function SiteHeader() {
             className="wave-slider"
             aria-label="Wave intensity"
           />
-          <SoundEngine />
         </div>
       </div>
 
@@ -120,7 +118,6 @@ export default function SiteHeader() {
               className="wave-slider mobile-slider"
               aria-label="Wave intensity"
             />
-            <SoundEngine />
           </div>
           <div className="mobile-toggles-row">
             <ThemeToggle />

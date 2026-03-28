@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../../context/LanguageContext";
-import PageTransition, { titleVariants } from "../../components/PageTransition";
+import PageTransition from "../../components/PageTransition";
 
 interface Project {
   slug: string;
@@ -20,6 +20,8 @@ interface Project {
   objectPosition?: string;
   objectScale?: number;
   scrollDuration?: number;
+  displayMode?: "infinite" | "booklet";
+  pdfUrl?: string;
 }
 
 export function DesignsClient() {
@@ -50,27 +52,19 @@ export function DesignsClient() {
       scrollDuration: 90, 
     },
     {
-      slug: "bustana",
-      titleKey: "designs.bustana.title",
-      year: "2026",
-      categoryKey: "designs.category.visual_language",
-      collaborators: "Rotem Cohen-Soaye",
-      descriptionKey: "designs.bustana.description",
+      slug: "script-in-stone",
+      titleKey: "designs.script.title",
+      year: "2024",
+      categoryKey: "designs.category.writing",
+      descriptionKey: "designs.script.description",
       type: "image",
-      images: [
-        "/images/designs/bustana/ROOF%20MOCK.jpg",
-        "/images/designs/bustana/BUSTANA%20CHILDREN-05.jpg",
-        "/images/designs/bustana/BUSTANA%20CHILDREN-10.jpg",
-        "/images/designs/bustana/BUSTANA%20CHILDREN-17.jpg",
-        "/images/designs/bustana/BUSTANA%20TABNIOT-10.jpg",
-        "/images/designs/bustana/BUSTANA%20TABNIOT-13.jpg",
-        "/images/designs/bustana/BUSTANA%20TABNIOT-16.jpg",
-        "/images/designs/bustana/BUSTANA%20TABNIOT-21.jpg",
-      ],
+      images: ["/images/designs/script-in-stone/cover.png"],
+      pdfUrl: "/images/designs/script-in-stone/Thesis - Script In Stone_single pages_low res.pdf",
       color: "rgba(245, 245, 247, 0.05)",
-      objectPosition: "25% 30%", 
-      objectScale: 1.5,
-      scrollDuration: 64,
+      objectPosition: "center",
+      objectScale: 1.1,
+      scrollDuration: 60,
+      displayMode: "booklet",
     },
     {
       slug: "sticky",
@@ -95,6 +89,26 @@ export function DesignsClient() {
       objectScale: 1.05,
       scrollDuration: 70,
     },
+    {
+      slug: "the-turing-defense",
+      titleKey: "designs.turing.title",
+      year: "2023",
+      categoryKey: "designs.category.editorial_design",
+      descriptionKey: "designs.turing.description",
+      type: "video",
+      videoCover: "/images/designs/the-turing-defense/booklet.mp4",
+      images: [
+        "/images/designs/the-turing-defense/Layer 7.png",
+        "/images/designs/the-turing-defense/Layer 5.png",
+        "/images/designs/the-turing-defense/Layer 6.png",
+        "/images/designs/the-turing-defense/Layer 8.png",
+        "/images/designs/the-turing-defense/Layer 12.png",
+        "/images/designs/the-turing-defense/Layer 18.png",
+      ],
+      color: "rgb(0, 0, 255)",
+      scrollDuration: 80,
+      objectScale: 2,
+    },
   ];
 
   return (
@@ -104,12 +118,9 @@ export function DesignsClient() {
           dir={lang === "he" ? "rtl" : "ltr"}
           className="page-header-container"
         >
-          <motion.h1 
-            className="page-title" 
-            variants={titleVariants}
-          >
+          <h1 className="page-title">
             {t("nav.designs")}
-          </motion.h1>
+          </h1>
         </div>
 
         <div className="designs-grid" style={{ 
@@ -364,7 +375,9 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
         </div>
 
         <div className="project-modal-media">
-          {isMobile ? (
+          {project.displayMode === "booklet" && project.pdfUrl ? (
+            <PDFBooklet pdfUrl={project.pdfUrl} lang={lang} t={t} />
+          ) : isMobile ? (
             <div className="mobile-slideshow-container" style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
               <img
                 key={`${project.slug}-${currentIdx}`}
@@ -424,5 +437,213 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
         </div>
       </motion.div>
     </motion.div>
+  );
+}
+
+function PDFBooklet({ pdfUrl, lang, t }: { pdfUrl: string; lang: string; t: (k: string) => string }) {
+  const paperColor = "#f2f1e9"; // Light greyish, tiny bit yellow
+  const paperTexture = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")`;
+
+  const [pages, setPages] = useState<string[]>([]);
+  const [currentPage, setCurrentPage] = useState(0); 
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [flipDirection, setFlipDirection] = useState(1); // 1 = next, -1 = prev
+  const [loading, setLoading] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const pageNumbers = [2, 3, 10, 11, 20, 21, 34, 35, 48, 49, 58, 59];
+
+  useEffect(() => {
+    const loadPdf = async () => {
+      try {
+        if (!(window as any).pdfjsLib) {
+          const script = document.createElement("script");
+          script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+          document.head.appendChild(script);
+          await new Promise((resolve) => {
+            script.onload = resolve;
+          });
+        }
+        const pdfjsLib = (window as any).pdfjsLib;
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        const loadingTask = pdfjsLib.getDocument(pdfUrl);
+        const pdf = await loadingTask.promise;
+        const pageImages: string[] = [];
+        for (const pageNum of pageNumbers) {
+          const page = await pdf.getPage(pageNum);
+          const viewport = page.getViewport({ scale: 2 });
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+          if (context) {
+            await page.render({ canvasContext: context, viewport }).promise;
+            pageImages.push(canvas.toDataURL("image/webp", 0.8));
+          }
+        }
+        setPages(pageImages);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error loading PDF:", err);
+        setLoading(false);
+      }
+    };
+    loadPdf();
+  }, [pdfUrl]);
+
+  const spreadsCount = Math.ceil(pages.length / 2);
+
+  useEffect(() => {
+    if (loading || isHovered || isFlipping) return;
+    const interval = setInterval(() => {
+      handleFlip(1);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [loading, isHovered, isFlipping, spreadsCount]);
+
+  const handleFlip = (dir: number) => {
+    if (isFlipping) return;
+    setFlipDirection(dir);
+    setIsFlipping(true);
+  };
+
+  const finalizeFlip = () => {
+    setCurrentPage((p) => {
+      if (flipDirection > 0) return (p + 1) % spreadsCount;
+      return (p - 1 + spreadsCount) % spreadsCount;
+    });
+    setIsFlipping(false);
+  };
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", width: "100%", color: "var(--text-color)" }}>
+        <p className="text-meta">Preparing Booklet...</p>
+      </div>
+    );
+  }
+
+  const currentSpread = [pages[currentPage * 2], pages[currentPage * 2 + 1]];
+  const nextIdx = (currentPage + 1) % spreadsCount;
+  const prevIdx = (currentPage - 1 + spreadsCount) % spreadsCount;
+  const targetSpread = flipDirection > 0 ? [pages[nextIdx * 2], pages[nextIdx * 2 + 1]] : [pages[prevIdx * 2], pages[prevIdx * 2 + 1]];
+
+  return (
+    <div 
+      dir="ltr"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{ 
+        width: "100%", 
+        height: "100%", 
+        display: "flex", 
+        alignItems: "center", 
+        justifyContent: "center",
+        perspective: "2500px",
+        padding: "2rem"
+      }}
+      onClick={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        handleFlip(e.clientX - rect.left > rect.width / 2 ? 1 : -1);
+      }}
+    >
+      <div style={{ 
+        position: "relative", 
+        width: "95%", 
+        height: "90%", 
+        display: "flex",
+        transformStyle: "preserve-3d",
+        cursor: "pointer"
+      }}>
+        {/* Left Side Static */}
+        <div style={{ 
+          flex: 1, 
+          backgroundColor: paperColor,
+          backgroundImage: paperTexture,
+          boxShadow: "inset -15px 0 40px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.1)",
+          overflow: "hidden",
+          borderRight: "1px solid rgba(0,0,0,0.05)",
+          zIndex: 1,
+          position: "relative"
+        }}>
+          <img 
+            src={isFlipping && flipDirection < 0 ? targetSpread[0] : currentSpread[0]} 
+            style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+            alt="Page Left" 
+          />
+        </div>
+
+        {/* Right Side Static */}
+        <div style={{ 
+          flex: 1, 
+          backgroundColor: paperColor,
+          backgroundImage: paperTexture,
+          boxShadow: "inset 15px 0 40px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.1)",
+          overflow: "hidden",
+          zIndex: 1,
+          position: "relative"
+        }}>
+          <img 
+            src={isFlipping && flipDirection > 0 ? targetSpread[1] : currentSpread[1]} 
+            style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+            alt="Page Right" 
+          />
+        </div>
+
+        {/* Flipping Leaf */}
+        {isFlipping && (
+          <motion.div
+            initial={{ rotateY: flipDirection > 0 ? 0 : -180 }}
+            animate={{ rotateY: flipDirection > 0 ? -180 : 0 }}
+            onAnimationComplete={finalizeFlip}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: flipDirection > 0 ? "50%" : "0",
+              width: "50%",
+              height: "100%",
+              transformStyle: "preserve-3d",
+              transformOrigin: flipDirection > 0 ? "left" : "right",
+              zIndex: 10
+            }}
+          >
+            {/* Front of leaf */}
+            <div style={{
+              position: "absolute",
+              inset: 0,
+              backfaceVisibility: "hidden",
+              backgroundColor: paperColor,
+              backgroundImage: paperTexture,
+              boxShadow: flipDirection > 0 ? "inset 15px 0 40px rgba(0,0,0,0.1)" : "inset -15px 0 40px rgba(0,0,0,0.1)",
+              overflow: "hidden"
+            }}>
+              <img 
+                src={flipDirection > 0 ? currentSpread[1] : currentSpread[0]} 
+                style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+                alt="Leaf Front" 
+              />
+            </div>
+            {/* Back of leaf */}
+            <div style={{
+              position: "absolute",
+              inset: 0,
+              backfaceVisibility: "hidden",
+              backgroundColor: paperColor,
+              backgroundImage: paperTexture,
+              boxShadow: flipDirection > 0 ? "inset -15px 0 40px rgba(0,0,0,0.1)" : "inset 15px 0 40px rgba(0,0,0,0.1)",
+              transform: "rotateY(180deg)",
+              overflow: "hidden"
+            }}>
+              <img 
+                src={flipDirection > 0 ? targetSpread[0] : targetSpread[1]} 
+                style={{ width: "100%", height: "100%", objectFit: "contain" }} 
+                alt="Leaf Back" 
+              />
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </div>
   );
 }

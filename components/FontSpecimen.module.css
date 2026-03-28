@@ -502,13 +502,6 @@
   font-family: var(--font-sans);
 }
 
-.discountBadge {
-  font-size: 0.7rem;
-  color: #ea5025;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 0.25rem;
-}
 
 .buyButton {
   display: block;
