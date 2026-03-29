@@ -441,8 +441,8 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
 }
 
 function PDFBooklet({ pdfUrl, lang, t }: { pdfUrl: string; lang: string; t: (k: string) => string }) {
-  const paperColor = "#f2f1e9"; // Light greyish, tiny bit yellow
-  const paperTexture = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")`;
+  const paperColor = "#f8f7f4"; // Neutral off-white, less yellow
+  const paperTexture = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E")`;
 
   const [pages, setPages] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(0); 
@@ -540,13 +540,27 @@ function PDFBooklet({ pdfUrl, lang, t }: { pdfUrl: string; lang: string; t: (k: 
         alignItems: "center", 
         justifyContent: "center",
         perspective: "2500px",
-        padding: "2rem"
+        padding: "2rem",
+        backgroundColor: "#fff",
+        position: "relative",
+        overflow: "hidden"
       }}
       onClick={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         handleFlip(e.clientX - rect.left > rect.width / 2 ? 1 : -1);
       }}
     >
+      {/* Global "Printed" Overlay */}
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        backgroundImage: paperTexture,
+        backgroundColor: paperColor,
+        mixBlendMode: "multiply",
+        pointerEvents: "none",
+        zIndex: 100
+      }} />
+
       <div style={{ 
         position: "relative", 
         width: "95%", 
@@ -558,8 +572,7 @@ function PDFBooklet({ pdfUrl, lang, t }: { pdfUrl: string; lang: string; t: (k: 
         {/* Left Side Static */}
         <div style={{ 
           flex: 1, 
-          backgroundColor: paperColor,
-          backgroundImage: paperTexture,
+          backgroundColor: "#fff",
           boxShadow: "inset -15px 0 40px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.1)",
           overflow: "hidden",
           borderRight: "1px solid rgba(0,0,0,0.05)",
@@ -576,8 +589,7 @@ function PDFBooklet({ pdfUrl, lang, t }: { pdfUrl: string; lang: string; t: (k: 
         {/* Right Side Static */}
         <div style={{ 
           flex: 1, 
-          backgroundColor: paperColor,
-          backgroundImage: paperTexture,
+          backgroundColor: "#fff",
           boxShadow: "inset 15px 0 40px rgba(0,0,0,0.1), 0 10px 30px rgba(0,0,0,0.1)",
           overflow: "hidden",
           zIndex: 1,
@@ -613,8 +625,7 @@ function PDFBooklet({ pdfUrl, lang, t }: { pdfUrl: string; lang: string; t: (k: 
               position: "absolute",
               inset: 0,
               backfaceVisibility: "hidden",
-              backgroundColor: paperColor,
-              backgroundImage: paperTexture,
+              backgroundColor: "#fff",
               boxShadow: flipDirection > 0 ? "inset 15px 0 40px rgba(0,0,0,0.1)" : "inset -15px 0 40px rgba(0,0,0,0.1)",
               overflow: "hidden"
             }}>
@@ -629,8 +640,7 @@ function PDFBooklet({ pdfUrl, lang, t }: { pdfUrl: string; lang: string; t: (k: 
               position: "absolute",
               inset: 0,
               backfaceVisibility: "hidden",
-              backgroundColor: paperColor,
-              backgroundImage: paperTexture,
+              backgroundColor: "#fff",
               boxShadow: flipDirection > 0 ? "inset -15px 0 40px rgba(0,0,0,0.1)" : "inset 15px 0 40px rgba(0,0,0,0.1)",
               transform: "rotateY(180deg)",
               overflow: "hidden"
