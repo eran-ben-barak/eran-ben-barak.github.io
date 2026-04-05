@@ -5,6 +5,7 @@ import styles from "./FontSpecimen.module.css";
 import TypeTester from "./TypeTester";
 import PurchaseSection from "./PurchaseSection";
 import { useLanguage } from "../context/LanguageContext";
+import UnderConstructionStamp from "./UnderConstructionStamp";
 
 type WeightEntry = { weight: number; label: string; italic?: boolean; italicAngle?: number };
 
@@ -96,7 +97,14 @@ export default function FontSpecimenDisplay({ font }: FontSpecimenProps) {
       translate={font.family === "StickyVariable" ? "no" : undefined}
     >
       {/* 1. Header: Boxed Tags + Big Centered Name */}
-      <div className={styles.specimenHeader}>
+      <div className={styles.specimenHeader} style={{ position: "relative" }}>
+        {font.tags.includes("In process") && (
+          <UnderConstructionStamp 
+            size={180} 
+            className={styles.stampOverlay} 
+            offsetRange={30}
+          />
+        )}
         <div className={styles.specimenTags} style={{ flexWrap: "wrap", rowGap: "0.5rem", marginBottom: "2rem" }}>
           {font.tags.map(tag => {
             const tagKey = `tag.${tag.toLowerCase().replace(" + ", "_").replace(" ", "-")}`;
@@ -105,9 +113,9 @@ export default function FontSpecimenDisplay({ font }: FontSpecimenProps) {
                 key={tag} 
                 className={`${styles.specimenTag} text-meta`}
                 style={
-                  tag === "Collaboration" || tag === "In process" 
-                  ? { backgroundColor: "var(--text-color)", color: "var(--bg-color)" } 
-                  : {}
+                  tag === "In process" 
+                  ? { backgroundColor: "#f8cf27", color: "#121212", borderColor: "#f8cf27" } 
+                  : (tag === "Collaboration" ? { backgroundColor: "var(--text-color)", color: "var(--bg-color)" } : {})
                 }
               >
                 {t(tagKey)}
@@ -267,19 +275,19 @@ export default function FontSpecimenDisplay({ font }: FontSpecimenProps) {
         // External Link Fonts
         const externalLinks: Record<string, { text: string; link: string }> = {
           neoklass: { 
-            text: "NeoKlass is sold at Fontef. For trial version and purchasing ->", 
+            text: t("specimen.neoklass_link"), 
             link: "https://fontef.com/neoklass" 
           },
           stickyvariable: { 
-            text: "Sticky is sold at ECAL Typefaces. For trial version and purchasing ->", 
+            text: t("specimen.sticky_link"), 
             link: "https://ecal-typefaces.ch/" 
           },
           wilson: { 
-            text: "Wilson is sold at Type Department. For trial version and purchasing ->", 
+            text: t("specimen.wilson_link"), 
             link: "https://type-department.com/products/wilson?_pos=1&_psq=wilson&_ss=e&_v=1.0" 
           },
           "'skolar sans hebrew'": { 
-            text: "Skolar Sans Hebrew is sold at Rosetta Type. For trial version and purchasing ->", 
+            text: t("specimen.skolar_link"), 
             link: "https://www.rosettatype.com/SkolarSansHebrew" 
           }
         };
@@ -319,7 +327,7 @@ export default function FontSpecimenDisplay({ font }: FontSpecimenProps) {
                 <span className={`${styles.sectionLabel} text-meta`}>{t("purchase.title")}</span>
               </div>
               <div className="text-editorial">
-                In Process. Will be available in the near future.
+                {t("specimen.in_process")}
               </div>
             </div>
           );

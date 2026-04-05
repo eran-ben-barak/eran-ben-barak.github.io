@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useLanguage } from "../../context/LanguageContext";
 import PageTransition from "../../components/PageTransition";
+import UnderConstructionStamp from "../../components/UnderConstructionStamp";
 
 type FontEntry = {
   slug: string;
@@ -124,11 +125,12 @@ export default function FontsIndex() {
                 {tagsToShow.map(tag => {
                   const tagKey = `tag.${tag.toLowerCase().replace(/\s\+\s/g, "_").replace(/\s/g, "-")}`;
                   const isSpecialTag = tag === "Collaboration" || tag === "In process";
+                  const isInProcessTag = tag === "In process";
                   
                   return (
                     <span 
                       key={tag} 
-                      className={`font-card-tag ${isSpecialTag ? "tag-special" : ""}`}
+                      className={`font-card-tag ${isInProcessTag ? "tag-in-process" : (isSpecialTag ? "tag-special" : "")}`}
                     >
                       {t(tagKey)}
                     </span>
@@ -167,8 +169,15 @@ export default function FontsIndex() {
             );
           }
 
+          const isInProcess = font.tags.includes("In process");
+
           return (
-            <Link key={font.slug} href={`/fonts/${font.slug}`} className="font-card">
+            <Link 
+              key={font.slug} 
+              href={`/fonts/${font.slug}`} 
+              className="font-card"
+              style={{ position: "relative" }}
+            >
               {CardContent}
             </Link>
           );

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html><body><script>
+const types = [
+  'video/mp4',
+  'video/mp4;codecs="avc1"',
+  'video/mp4; codecs="avc1.424028"',
+  'video/mp4; codecs="avc1.42E01E"',
+  'video/mp4; codecs="avc1.4d002a"',
+  'video/mp4; codecs="h264"',
+  'video/x-matroska;codecs=avc1',
+  'video/mp4; codecs="avc1.640028"',
+  'video/mp4; codecs="avc1.640029"',
+  'video/webm; codecs=h264'
+];
+console.log(types.filter(t => MediaRecorder.isTypeSupported(t)));
+</script></body></html>

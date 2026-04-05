@@ -11,6 +11,21 @@
 .specimenHeader {
   text-align: center;
   padding: 2rem 0;
+  position: relative;
+}
+
+.stampOverlay {
+  top: -2rem !important;
+  right: 5% !important;
+}
+
+@media (max-width: 768px) {
+  .stampOverlay {
+    width: 120px !important;
+    height: 120px !important;
+    top: -1rem !important;
+    right: 0 !important;
+  }
 }
 
 .specimenTitle {
@@ -136,7 +151,7 @@
   letter-spacing: 0.1em;
   margin-bottom: 2rem;
   opacity: 0.5;
-  font-family: "Neoklass", sans-serif;
+  font-family: var(--font-sans);
 }
 
 .showcaseInput {
@@ -498,7 +513,7 @@
 .finalPrice {
   font-size: 3rem;
   font-weight: 400;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   font-family: var(--font-sans);
 }
 

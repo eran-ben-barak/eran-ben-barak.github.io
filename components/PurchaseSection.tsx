@@ -174,7 +174,7 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
 
                 {(currency === "USD" || currency === "EUR") && (
                   <span className="text-meta" style={{ fontSize: "0.65rem", opacity: 0.5, marginTop: "0.5rem", textTransform: "none" }}>
-                    * Prices are approximate and may vary at checkout due to currency conversion.
+                    {t("specimen.converter_note")}
                   </span>
                 )}
               </div>

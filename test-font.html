@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><body><script>
+window.onload = async () => {
+    try {
+        const font = new FontFace("TestFont", "url('/assets/fonts/Dafna-Black.otf') format('opentype')");
+        await font.load();
+        document.fonts.add(font);
+        console.log("SUCCESS Dafna-Black");
+    } catch(e) {
+        console.error("FAIL Dafna-Black format opentype:", e);
+    }
+    try {
+        const font2 = new FontFace("TestFont2", "url('/assets/fonts/Dafna-Black.otf')");
+        await font2.load();
+        document.fonts.add(font2);
+        console.log("SUCCESS Dafna-Black no format");
+    } catch(e) {
+        console.error("FAIL Dafna-Black no format:", e);
+    }
+    try {
+        const font3 = new FontFace("TestFont3", "url('http://localhost:3000/assets/fonts/Dafna-Black.otf')");
+        await font3.load();
+        console.log("SUCCESS localhost");
+    } catch(e) {
+        console.error("FAIL localhost:", e);
+    }
+}
+</script></body></html>

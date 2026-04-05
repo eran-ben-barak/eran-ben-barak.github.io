@@ -58,7 +58,7 @@
   font-weight: 700 !important;
   background: transparent;
   color: inherit;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
 }
 
 .cursor {

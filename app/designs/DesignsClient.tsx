@@ -379,19 +379,36 @@ function ProjectModal({ project, onClose, lang, t }: { project: Project; onClose
             <PDFBooklet pdfUrl={project.pdfUrl} lang={lang} t={t} />
           ) : isMobile ? (
             <div className="mobile-slideshow-container" style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden" }}>
-              <img
-                key={`${project.slug}-${currentIdx}`}
-                src={project.images[currentIdx]}
-                alt={`${project.slug}-${currentIdx}`}
-                style={{ 
+              {(() => {
+                const src = project.images[currentIdx];
+                const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
+                const commonStyle: React.CSSProperties = {
                   position: "absolute",
                   top: 0,
                   left: 0,
                   width: "100%",
                   height: "100%",
                   objectFit: "cover"
-                }}
-              />
+                };
+                return isVideo ? (
+                  <video
+                    key={`${project.slug}-${currentIdx}`}
+                    src={src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    style={commonStyle}
+                  />
+                ) : (
+                  <img
+                    key={`${project.slug}-${currentIdx}`}
+                    src={src}
+                    alt={`${project.slug}-${currentIdx}`}
+                    style={commonStyle}
+                  />
+                );
+              })()}
             </div>
           ) : (
             <div className="infinite-scroll-wrapper">

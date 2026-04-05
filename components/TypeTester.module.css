@@ -16,7 +16,7 @@
 }
 
 .microLabel {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.6rem;
   color: var(--text-color);
   opacity: 0.3;
@@ -60,12 +60,8 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  font-family: var(--font-sans);
   font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-color);
-  opacity: 0.8;
 }
 .label span {
   display: flex;
