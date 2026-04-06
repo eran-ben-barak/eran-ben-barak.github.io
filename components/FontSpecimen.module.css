@@ -14,18 +14,22 @@
   position: relative;
 }
 
-.stampOverlay {
-  top: -2rem !important;
-  right: 5% !important;
-}
-
 @media (max-width: 768px) {
   .stampOverlay {
-    width: 120px !important;
-    height: 120px !important;
-    top: -1rem !important;
-    right: 0 !important;
+    width: 80px !important;
+    height: 80px !important;
+    top: auto !important;
+    bottom: -3rem !important;
+    right: 50% !important;
+    margin-right: -40px !important;
+    transform: rotate(-10deg) !important;
+    z-index: 50 !important;
   }
+}
+
+.stampOverlay img {
+  width: 100% !important;
+  height: auto !important;
 }
 
 .specimenTitle {
@@ -255,6 +259,9 @@
   }
 
   .specimenHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 1rem 0;
   }
 
@@ -269,12 +276,14 @@
   }
   
   .specimenTitle, .stickyAnimatedHeadline {
+    order: 1;
     font-size: clamp(2.5rem, 15vw, 5rem); /* More aggressive title scaling */
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem !important;
   }
   
   .specimenTags {
-    margin-bottom: 1rem !important;
+    order: 2;
+    margin-bottom: 0 !important;
   }
 
   .featuresGrid {
