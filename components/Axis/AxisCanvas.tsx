@@ -107,8 +107,9 @@ const AxisCanvas = forwardRef<AxisCanvasRef, Props>(
         // Pre-warm the browser's font cache for this SVG
         await renderFrame(canvas, buildSVG(s, axes, 0, fontDecl, wrappedLines));
 
-        const stream = (canvas as any).captureStream(0);
-        const videoTrack = stream.getVideoTracks()[0] as any;
+        const canvasAny = canvas as any;
+        const stream = canvasAny.captureStream ? canvasAny.captureStream(0) : (canvas as any).mozCaptureStream?.(0);
+        const videoTrack = stream.getVideoTracks()[0];
 
         const candidates = [
           { mime: 'video/mp4; codecs="avc1.42E01E"', ext: 'mp4' },
@@ -130,7 +131,7 @@ const AxisCanvas = forwardRef<AxisCanvasRef, Props>(
           const frameStart = performance.now();
           const timeSec = f / FPS;
           await renderFrame(canvas, buildSVG(s, axes, timeSec, fontDecl, wrappedLines));
-          if (videoTrack?.requestFrame) videoTrack.requestFrame();
+          if (videoTrack && 'requestFrame' in videoTrack) (videoTrack as any).requestFrame();
           if (onProgress) onProgress(Math.round(((f + 1) / totalFrames) * 98));
 
           const elapsed = performance.now() - frameStart;
@@ -151,13 +152,13 @@ const AxisCanvas = forwardRef<AxisCanvasRef, Props>(
         
         // Restart loop
         startTsRef.current = 0;
-        rafRef.current = requestAnimationFrame(async function loop(ts) {
+        rafRef.current = requestAnimationFrame(function loop(ts) {
           if (startTsRef.current === 0) startTsRef.current = ts;
           const decl = fontDeclRef.current;
           if (decl) {
             const timeSec = (ts - startTsRef.current) / 1000;
             const svg = buildSVG(sRef.current, availRef.current.length > 0 ? availRef.current : STICKY_FALLBACK_AXES, timeSec, decl, wrappedLines);
-            await renderFrame(canvas, svg);
+            renderFrame(canvas, svg);
           }
           rafRef.current = requestAnimationFrame(loop);
         });
@@ -172,7 +173,7 @@ const AxisCanvas = forwardRef<AxisCanvasRef, Props>(
       if (!canvas) return;
       let active = true;
 
-      const loop = async (tsMs: number) => {
+      const loop = (tsMs: number) => {
         if (!active) return;
         if (startTsRef.current === 0) startTsRef.current = tsMs;
         const timeSec = (tsMs - startTsRef.current) / 1000;
@@ -183,7 +184,7 @@ const AxisCanvas = forwardRef<AxisCanvasRef, Props>(
 
         if (fontDecl) {
           const svg = buildSVG(s, axes, timeSec, fontDecl, wrappedLines);
-          await renderFrame(canvas, svg);
+          renderFrame(canvas, svg);
         } else {
           const ctx = canvas.getContext("2d");
           if (ctx) {

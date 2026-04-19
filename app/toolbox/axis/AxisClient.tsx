@@ -158,7 +158,7 @@ export default function AxisClient() {
           colors: { ...prev.colors, [field]: value }
         }));
     } else {
-      setState(prev => ({ ...prev, [name]: val }));
+      setState(prev => ({ ...prev, [name as keyof AxisState]: val }));
     }
   };
 
@@ -235,7 +235,18 @@ export default function AxisClient() {
   };
 
   // -- Helpers --
-  const ControlSlider = ({ label, value, min, max, step, onChange, active, onToggle }: any) => (
+  interface ControlSliderProps {
+    label: string;
+    value: number;
+    min: number;
+    max: number;
+    step: number;
+    onChange: (v: number) => void;
+    active?: boolean;
+    onToggle?: () => void;
+  }
+
+  const ControlSlider = ({ label, value, min, max, step, onChange, active, onToggle }: ControlSliderProps) => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', opacity: active === false ? 0.5 : 1 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', textTransform: 'uppercase' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
