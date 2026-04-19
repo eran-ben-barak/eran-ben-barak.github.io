@@ -27,6 +27,14 @@ export default function ToolBoxPage() {
       category: t('toolbox.image'),
       image: '/images/toolbox/mosaic/cover.mp4',
       color: "rgba(245, 245, 247, 0.05)"
+    },
+    {
+      name: t('toolbox.axis_name'),
+      path: '/toolbox/axis',
+      desc: t('toolbox.axis_desc'),
+      category: t('toolbox.typeface'),
+      image: '/images/toolbox/axis/variable.mp4',
+      color: "rgba(245, 245, 247, 0.05)"
     }
   ];
 

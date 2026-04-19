@@ -139,13 +139,21 @@ const DICTIONARY: Record<Language, Record<string, string>> = {
     "mosaic.tile_size": "Tile Size",
     "mosaic.export": "Export",
     "mosaic.save_video": "Save Video",
+    "mosaic.grain": "Grain",
     "mosaic.rendering": "Rendering Loop...",
     "specimen.neoklass_link": "NeoKlass is sold at Fontef. For trial version and purchasing ->",
     "specimen.sticky_link": "Sticky is sold at ECAL Typefaces. For trial version and purchasing ->",
     "specimen.wilson_link": "Wilson is sold at Type Department. For trial version and purchasing ->",
     "specimen.skolar_link": "Skolar Sans Hebrew is sold at Rosetta Type. For trial version and purchasing ->",
     "specimen.in_process": "In Process. Will be available in the near future.",
-    "specimen.converter_note": "* Prices are approximate and may vary at checkout due to currency conversion."
+    "specimen.converter_note": "* Prices are approximate and may vary at checkout due to currency conversion.",
+    "toolbox.axis_name": "Variable",
+    "toolbox.axis_desc": "Interactive testing and looping video export for variable fonts",
+    "toolbox.typeface": "Typeface",
+    "axis.text": "Text",
+    "axis.font": "Font",
+    "axis.mode": "Animation Mode",
+    "axis.export": "Export Video"
   },
   he: {
     "header.name": "ערן בן ברק",
@@ -276,13 +284,21 @@ const DICTIONARY: Record<Language, Record<string, string>> = {
     "mosaic.tile_size": "גודל אריח",
     "mosaic.export": "ייצוא",
     "mosaic.save_video": "שמור סרטון",
+    "mosaic.grain": "רעש",
     "mosaic.rendering": "מרנדר לופ...",
     "specimen.neoklass_link": "NeoKlass נמכר דרך Fontef. לגרסת ניסיון ורכישה ->",
     "specimen.sticky_link": "Sticky נמכר דרך ECAL Typefaces. לגרסת ניסיון ורכישה ->",
     "specimen.wilson_link": "Wilson נמכר דרך Type Department. לגרסת ניסיון ורכישה ->",
     "specimen.skolar_link": "Skolar Sans Hebrew נמכר דרך Rosetta Type. לגרסת ניסיון ורכישה ->",
     "specimen.in_process": "בפיתוח. יהיה זמין לרכישה בקרוב.",
-    "specimen.converter_note": "* המחירים מוערכים ועשויים להשתנות במעמד התשלום עקב המרת מטבע."
+    "specimen.converter_note": "* המחירים מוערכים ועשויים להשתנות במעמד התשלום עקב המרת מטבע.",
+    "toolbox.axis_name": "וריאבל",
+    "toolbox.axis_desc": "בדיקה אינטראקטיבית וייצוא סרטוני לופ לפונטים וריאביליים",
+    "toolbox.typeface": "טיפוגרפיה",
+    "axis.text": "טקסט",
+    "axis.font": "פונט",
+    "axis.mode": "מצב אנימציה",
+    "axis.export": "ייצוא סרטון"
   }
 };
 

@@ -277,7 +277,7 @@ export const FONT_DATA: Record<string, FontConfig> = {
       }
     ],
     aboutInfo: "MonoKlass is a monospaced version of NeoKlass, taking the same approach of concise and utilitarian design with character to define the shape of the letters. It is meant for small-sized texts and technical information such as footnotes.",
-    hebrewAboutInfo: "מונוקלאס הוא גרסה מונוספייסית של נאוקלאס, הנוקטת באותה גישה של עיצוב תמציתי ושימושי עם אופי להגדרת צורת האותיות. הוא מיועד לטקסטים בגדלים קטנים ומידע טכני כגון הערות שוליים."
+    hebrewAboutInfo: "מונוקלאס הוא גרסה המונוספייס של נאוקלאס, הנוקטת באותה גישה עיצובית תמציתית ושימושית אבל עם אופי כדי להגדיר את צורת האותיות. הוא מיועד לטקסטים בגדלים קטנים ומידע טכני כגון הערות שוליים."
   },
   "skolar-sans-hebrew": {
     name: "Skolar Sans Hebrew",

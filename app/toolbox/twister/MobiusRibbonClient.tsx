@@ -168,7 +168,6 @@ export default function MobiusRibbonClient() {
               padding: '2.5rem',
               maxWidth: '480px',
               width: '100%',
-              position: 'relative',
               borderRadius: 0,
               display: 'flex',
               flexDirection: 'column',
@@ -177,20 +176,6 @@ export default function MobiusRibbonClient() {
               textAlign: isRTL ? 'right' : 'left'
             }}
           >
-            <button
-              onClick={() => setShowPopup(false)}
-              style={{
-                position: 'absolute', top: '1rem',
-                [isRTL ? 'left' : 'right']: '1rem',
-                background: 'transparent', border: 'none',
-                fontSize: '1.25rem', cursor: 'pointer',
-                color: 'var(--text-color)', lineHeight: 1,
-                padding: '0.25rem 0.5rem'
-              }}
-            >
-              ✕
-            </button>
-
             <div>
               <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>{t('twister.export')}</h2>
               <div style={{ borderTop: '1.5px solid var(--border-color)', paddingTop: '1rem', opacity: 0.7, fontSize: '0.85rem' }}>
@@ -203,16 +188,22 @@ export default function MobiusRibbonClient() {
               className="nav-btn"
               style={{
                 width: '100%', padding: '0.75rem',
-                fontFamily: 'inherit', fontSize: '0.9rem',
-                cursor: 'pointer', textAlign: 'center',
                 fontWeight: 'bold', justifyContent: 'center'
               }}
             >
               {t('twister.save_video')}
             </button>
+            <button
+              onClick={() => setShowPopup(false)}
+              className="nav-btn"
+              style={{ width: '100%', padding: '0.75rem', justifyContent: 'center', opacity: 0.6 }}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
+
 
       <div style={{
         display: 'flex', 

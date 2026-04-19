@@ -6,6 +6,7 @@ interface MosaicState {
   speed: number;    // 0–3
   offset: number;   // 1–50 px
   tileSize: number; // 2–100 px
+  grain: number;    // 0–100
 }
 
 interface TileInfo {
@@ -31,6 +32,7 @@ export default function MosaicClient() {
     speed: 1.5,
     offset: 25,
     tileSize: 50,
+    grain: 0,
   });
   const stateRef = useRef(state);
   useEffect(() => { stateRef.current = state; }, [state]);
@@ -181,7 +183,7 @@ export default function MosaicClient() {
     ctx: CanvasRenderingContext2D, 
     W: number, H: number, 
     t: number, 
-    speed: number, offset: number, tileSize: number
+    speed: number, offset: number, tileSize: number, grain: number
   ) => {
     ctx.clearRect(0, 0, W, H);
     if (!img1 || mapping.length === 0 || targetColors.length === 0 || sourceTiles.length === 0 || W === 0 || H === 0) return;
@@ -212,6 +214,19 @@ export default function MosaicClient() {
         ctx.restore();
       }
     }
+
+    if (grain > 0) {
+      const imageData = ctx.getImageData(0, 0, W, H);
+      const data = imageData.data;
+      const amount = (grain / 100) * 255 * 0.4;
+      for (let i = 0; i < data.length; i += 4) {
+        const noise = (Math.random() - 0.5) * amount;
+        data[i] += noise;
+        data[i + 1] += noise;
+        data[i + 2] += noise;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
   }, [img1, mapping, targetColors, sourceTiles]);
 
   const animate = useCallback((timestamp: number) => {
@@ -227,8 +242,8 @@ export default function MosaicClient() {
       return;
     }
 
-    const { speed, offset, tileSize } = stateRef.current;
-    drawMosaic(ctx, canvas.width, canvas.height, timeRef.current, speed, offset, tileSize);
+    const { speed, offset, tileSize, grain } = stateRef.current;
+    drawMosaic(ctx, canvas.width, canvas.height, timeRef.current, speed, offset, tileSize, grain);
     rafRef.current = requestAnimationFrame(animate);
   }, [drawMosaic]);
 
@@ -300,7 +315,7 @@ export default function MosaicClient() {
       exportH = Math.round(exportH * scale);
     }
 
-    const { speed, offset, tileSize } = state;
+    const { speed, offset, tileSize, grain } = state;
     setIsRecording(true);
     setExportProgress(0);
     setExportBlob(null);
@@ -331,7 +346,7 @@ export default function MosaicClient() {
         exportSpeed = (numPeriods * 2 * Math.PI) / actualDurationSec;
       }
 
-      drawMosaic(exportCtx, exportW, exportH, 0, exportSpeed, offset, tileSize);
+      drawMosaic(exportCtx, exportW, exportH, 0, exportSpeed, offset, tileSize, grain);
 
       const stream = (exportCanvas as any).captureStream(30) as MediaStream;
       const mimeTypes = [
@@ -383,7 +398,7 @@ export default function MosaicClient() {
             setTimeout(() => recorder.stop(), 500);
             return;
           }
-          drawMosaic(exportCtx, exportW, exportH, processedFrames * (1/fps), exportSpeed, offset, tileSize);
+          drawMosaic(exportCtx, exportW, exportH, processedFrames * (1/fps), exportSpeed, offset, tileSize, grain);
           processedFrames++;
           setExportProgress(Math.min(Math.round((processedFrames / totalFrames) * 100), 99));
           requestAnimationFrame(recordFrame);
@@ -449,11 +464,11 @@ export default function MosaicClient() {
     <>
       {showPopup && exportBlob && (
         <div onClick={() => setShowPopup(false)} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(18, 18, 18, 0.85)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div onClick={e => e.stopPropagation()} style={{ backgroundColor: 'var(--bg-color)', border: '1.5px solid var(--border-color)', padding: '2.5rem', maxWidth: '480px', width: '100%', position: 'relative', display: 'flex', flexDirection: 'column', gap: '1.5rem', direction: isRTL ? 'rtl' : 'ltr' }}>
-            <button onClick={() => setShowPopup(false)} style={{ position: 'absolute', top: '1rem', [isRTL ? 'left' : 'right']: '1rem', background: 'transparent', border: 'none', color: 'var(--text-color)', cursor: 'pointer' }}>✕</button>
+        <div onClick={e => e.stopPropagation()} style={{ backgroundColor: 'var(--bg-color)', border: '1.5px solid var(--border-color)', padding: '2.5rem', maxWidth: '480px', width: '100%', display: 'flex', flexDirection: 'column', gap: '1.5rem', direction: isRTL ? 'rtl' : 'ltr' }}>
             <h2 style={{ fontSize: '1.5rem' }}>{t('mosaic.export')}</h2>
             <p>{exportFilename.current}</p>
-            <button onClick={handleDownloadFile} className="nav-btn" style={{ width: '100%', padding: '0.75rem', fontWeight: 'bold' }}>{t('mosaic.save_video')}</button>
+            <button onClick={handleDownloadFile} className="nav-btn" style={{ width: '100%', padding: '0.75rem', fontWeight: 'bold', justifyContent: 'center' }}>{t('mosaic.save_video')}</button>
+            <button onClick={() => setShowPopup(false)} className="nav-btn" style={{ width: '100%', padding: '0.75rem', justifyContent: 'center', opacity: 0.6 }}>Close</button>
           </div>
         </div>
       )}
@@ -479,6 +494,7 @@ export default function MosaicClient() {
           <ControlSlider label={t('mosaic.speed')} name="speed" min={0} max={3} step={0.1} />
           <ControlSlider label={t('mosaic.offset')} name="offset" min={1} max={50} step={1} />
           <ControlSlider label={t('mosaic.tile_size')} name="tileSize" min={2} max={100} step={1} />
+          <ControlSlider label={t('mosaic.grain')} name="grain" min={0} max={100} step={1} />
           {isProcessing && <div style={{ fontSize: '0.7rem', opacity: 0.6 }}>{t('mosaic.rendering')}</div>}
           <div style={{ marginTop: 'auto' }}>
             <button onClick={handleExportVideo} disabled={isRecording || isProcessing} className="nav-btn" style={{ width: '100%', padding: '0.75rem', fontWeight: 'bold' }}>
