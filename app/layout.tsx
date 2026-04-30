@@ -17,12 +17,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://eranbenbarak.com'),
-  title: "Eran Ben Barak | Type Design & Graphic Artist",
+  title: "Eran Ben Barak | Type & Graphic Designer",
   description: "An independent type and graphic designer. Specializing in custom typefaces, logotypes, and branding.",
   keywords: ["Type Design", "Foundry", "Typography", "Graphic Design", "Branding", "Hebrew Type", "Latin Type", "Eran Ben Barak"],
   authors: [{ name: "Eran Ben Barak" }],
   openGraph: {
-    title: "Eran Ben Barak | Type Design & Graphic Artist",
+    title: "Eran Ben Barak | Type & Graphic Designer",
     description: "An independent type and graphic designer. Specializing in custom typefaces, logotypes, and branding.",
     url: "https://eranbenbarak.com",
     siteName: "Eran Ben Barak",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eran Ben Barak | Type Design & Graphic Artist",
+    title: "Eran Ben Barak | Type & Graphic Designer",
     description: "An independent type and graphic designer. Specializing in custom typefaces, logotypes, and branding.",
     images: ["/icon.png"],
   },
