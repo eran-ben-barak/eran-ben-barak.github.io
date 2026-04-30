@@ -3,10 +3,10 @@ import { HomeClient } from "./HomeClient";
 
 export const metadata: Metadata = {
   title: "Eran Ben Barak | Type Design & Graphic Artist",
-  description: "An independent one-man type foundry and graphic design studio. Specializing in custom typefaces, logotypes, and branding.",
+  description: "An independent type and graphic designer. Specializing in custom typefaces, logotypes, and branding.",
   openGraph: {
     title: "Eran Ben Barak | Type Design & Graphic Artist",
-    description: "An independent one-man type foundry and graphic design studio. Specializing in custom typefaces, logotypes, and branding.",
+    description: "An independent type and graphic designer. Specializing in custom typefaces, logotypes, and branding.",
     url: "https://eranbenbarak.com",
   },
 };

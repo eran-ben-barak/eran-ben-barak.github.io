@@ -27,7 +27,7 @@ This document contains all the text currently used on the website. For your conv
 
 | English | Hebrew |
 | :--- | :--- |
-| An independent one-man type foundry and graphic design studio. Specializing in custom typefaces, logotypes, and branding. | סטודיו עצמאי לעיצוב פונטים ועיצוב גרפי. מתמחה בעיצוב פונטים לחברות, לוגוטייפים ומיתוג. |
+| An independent type and graphic designer. Specializing in custom typefaces, logotypes, and branding. | מעצב גרפי ופונטים עצמאי. מתמחה בעיצוב פונטים לחברות, לוגוטייפים ומיתוג. |
 
 ---
 
