@@ -206,8 +206,8 @@ export const FONT_DATA: Record<string, FontConfig> = {
     sampleText: "The quick brown fox jumps over the lazy dog. 0123456789",
     category: "Monospaced",
     script: "Latin + Hebrew",
-    year: "2024",
-    tags: ["Sans-serif", "Latin + Hebrew", "Monospace", "In process"],
+    year: "2026",
+    tags: ["Sans-serif", "Latin + Hebrew", "Monospace"],
     weights: [
       { weight: 300, label: "Light" },
       { weight: 300, label: "Light Italic", italic: true },
@@ -619,4 +619,23 @@ export const FONT_DATA: Record<string, FontConfig> = {
     aboutInfo: "Wilson is a wavy, psychedelic display typeface that channels the spirit of 1960s rock posters. Named after Wes Wilson, it celebrates distortion, rhythm, and the beauty of imbalance. Drawing inspiration from the interlocking forms and optical illusions of psychedelic lettering, each curve and counter is crafted to create a hypnotic, fluid texture that turns negative space into motion.",
     hebrewAboutInfo: "ווילסון הוא פונט תצוגה פסיכדלי שמשדר את רוחן של כרזות הרוק משנות ה-60. הוא נקרא על שמו של ווס ווילסון וחוגג עיוות, קצב ואת היופי שבחוסר איזון. בהשראת הצורות המשתלבות והאשליות האופטיות של כיתוב פסיכדלי, כל עקומה וחלל פנימי מעוצבים כדי ליצור טקסטורה מהפנטת וזורמת שהופכת את החלל השלילי לתנועה."
   },
+  "relic-hebrew": {
+    name: "Relic Hebrew",
+    hebrewName: "רליק עברית",
+    family: "'Relic Hebrew'",
+    defaultText: "Relic Hebrew רליק עברית",
+    sampleText: "אבגדהוזחטיכלמנסעפצקרשת 0123456789",
+    category: "Serif",
+    script: "Latin + Hebrew",
+    year: "2026",
+    tags: ["Serif", "Latin + Hebrew", "Collaboration"],
+    weights: [
+      { weight: 400, label: "Regular" }
+    ],
+    charset: {
+      numerals: "0123456789",
+      hebrew: "אבגדהוזחטיכךלמםנןסעפףצץקרשת",
+    },
+    features: ["liga", "kern"],
+  }
 };

@@ -83,7 +83,6 @@ export default function SiteHeader() {
       <nav className="nav-links header-right desktop-only">
         <Link href="/fonts" className="nav-btn">{t("nav.fonts")}</Link>
         <Link href="/designs" className="nav-btn">{t("nav.designs")}</Link>
-        <Link href="/toolbox" className="nav-btn">{t("nav.toolbox")}</Link>
         <Link href="/about" className="nav-btn">{t("nav.about")}</Link>
         <LanguageToggle />
       </nav>
@@ -104,7 +103,6 @@ export default function SiteHeader() {
         <nav className="mobile-nav-links">
           <Link href="/fonts" className="mobile-nav-item" onClick={closeMenu}>{t("nav.fonts")}</Link>
           <Link href="/designs" className="mobile-nav-item" onClick={closeMenu}>{t("nav.designs")}</Link>
-          <Link href="/toolbox" className="mobile-nav-item" onClick={closeMenu}>{t("nav.toolbox")}</Link>
           <Link href="/about" className="mobile-nav-item" onClick={closeMenu}>{t("nav.about")}</Link>
         </nav>
         

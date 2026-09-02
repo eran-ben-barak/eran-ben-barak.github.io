@@ -44,13 +44,14 @@ export const titleVariants = {
   }
 };
 
-export default function PageTransition({ children }: { children: ReactNode }) {
+export default function PageTransition({ children, style }: { children: ReactNode; style?: React.CSSProperties }) {
   return (
     <motion.div
       initial="hidden"
       animate="visible"
       exit="exit"
       variants={pageVariants}
+      style={style}
     >
       {children}
     </motion.div>

@@ -30,6 +30,28 @@ export function DesignsClient() {
 
   const projects: Project[] = [
     {
+      slug: "manofim-18",
+      titleKey: "designs.manofim18.title",
+      year: "2026",
+      categoryKey: "designs.category.branding",
+      collaborators: "Rotem Cohen-Soaye, Eitan Zelwer",
+      descriptionKey: "designs.manofim18.description",
+      type: "video",
+      videoCover: "/images/designs/manofim-18/MANOFIM%2018%20LOGO.mp4",
+      images: [
+        "/images/designs/manofim-18/MAN26-01.png",
+        "/images/designs/manofim-18/MAN26-03.png",
+        "/images/designs/manofim-18/MAN26-05.png",
+        "/images/designs/manofim-18/MAN26-06.png",
+        "/images/designs/manofim-18/MAN26-08.png",
+        "/images/designs/manofim-18/MAN26-13.png",
+        "/images/designs/manofim-18/MAN26-14.png",
+        "/images/designs/manofim-18/MAN26-15.png",
+      ],
+      color: "rgba(245, 245, 247, 0.05)",
+      scrollDuration: 90,
+    },
+    {
       slug: "manofim-17",
       titleKey: "designs.manofim.title",
       year: "2025",

@@ -47,6 +47,16 @@ export function FontPageClient({ slug, font }: { slug: string; font: FontConfig 
     );
   }
 
+  if (slug === "relic-hebrew") {
+    return (
+      <section style={{ textAlign: "center", marginTop: "4rem" }}>
+        <h1 className="page-title">Redirecting...</h1>
+        <p className="page-subtitle">This font is available at East of Rome.</p>
+        <script dangerouslySetInnerHTML={{ __html: 'window.location.href="https://www.eastofrome.com/fonts/relic";' }} />
+      </section>
+    );
+  }
+
   if (!font) {
     return (
       <section style={{ textAlign: "center", marginTop: "4rem" }}>

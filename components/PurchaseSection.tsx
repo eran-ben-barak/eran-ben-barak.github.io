@@ -8,51 +8,65 @@ import { motion, AnimatePresence } from "framer-motion";
 interface PurchaseSectionProps {
   slug: string;
   fontName: string;
+  hebrewName?: string;
   weights: { weight: number; label: string }[];
 }
 
 type Tier = "solo" | "studio" | "business";
-type Currency = "NIS" | "USD" | "EUR";
 
 const PRICES = {
-  NIS: { solo: 500, studio: 1000, business: 2000 },
-  USD: { solo: 130, studio: 260, business: 520 },
-  EUR: { solo: 120, studio: 240, business: 480 },
+  solo: 500,
+  studio: 1000,
+  business: 2000,
 };
 
-const CURRENCY_SYMBOLS = {
-  NIS: "₪",
-  USD: "$",
-  EUR: "€",
-};
+const CURRENCY_SYMBOL = "₪";
 
-const PRODUCT_MAPPING: Record<string, string> = {
-  "olivia-display": "329694cd-6d8c-470c-aff6-738dd74ebb77",
-  "olivia-text": "0f603866-79af-4f23-b079-a7746d12d235",
-};
-
-export default function PurchaseSection({ slug, fontName, weights }: PurchaseSectionProps) {
+export default function PurchaseSection({ slug, fontName, hebrewName, weights }: PurchaseSectionProps) {
   const { t, lang } = useLanguage();
   const [tier, setTier] = useState<Tier>("solo");
-  const [currency, setCurrency] = useState<Currency>("NIS");
   const [selectedWeights, setSelectedWeights] = useState<number[]>(weights.map(w => w.weight));
   
   const isRTL = lang === "he";
   const numSelected = selectedWeights.length;
   const isFullFamily = numSelected === weights.length;
   
-  const basePrice = PRICES[currency][tier];
+  const basePrice = PRICES[tier];
   const totalPrice = isFullFamily ? Math.round(basePrice * numSelected * 0.75) : (basePrice * numSelected);
 
   const toggleWeight = (w: number) => {
-    // If we click a single weight, we only want that weight selected
-    setSelectedWeights([w]);
+    if (isFullFamily) {
+      // When full family is selected and a specific style is pressed,
+      // deselect everything except that style
+      setSelectedWeights([w]);
+    } else if (selectedWeights.includes(w)) {
+      // Prevent deselecting if it's the only weight selected
+      if (selectedWeights.length > 1) {
+        setSelectedWeights(selectedWeights.filter(item => item !== w));
+      }
+    } else {
+      setSelectedWeights([...selectedWeights, w]);
+    }
   };
 
-  const selectAll = () => setSelectedWeights(weights.map(w => w.weight));  const productId = PRODUCT_MAPPING[slug];
-  const buyUrl = productId 
-    ? `https://eranbenbarak.lemonsqueezy.com/checkout/buy/${productId}?currency=${currency}`
-    : `https://eranbenbarak.lemonsqueezy.com/`;
+  const selectAll = () => setSelectedWeights(weights.map(w => w.weight));
+
+  const selectedLabels = weights
+    .filter(w => selectedWeights.includes(w.weight))
+    .map(w => t(`weight.${w.label.toLowerCase()}`));
+
+  const fontTitleForMail = isRTL && hebrewName ? hebrewName : fontName;
+  const tierTitle = t(`purchase.${tier}_title`);
+  const stylesText = isFullFamily 
+    ? `${t("purchase.full_family")} (${selectedLabels.join(", ")})`
+    : selectedLabels.join(", ");
+
+  const mailSubject = fontTitleForMail;
+  const mailBody = isRTL 
+    ? `ברצוני לרכוש: ${fontTitleForMail}\nרמת רישיון: ${tierTitle}\nמשקלים: ${stylesText}`
+    : `I would like to purchase: ${fontName}\nLicense Tier: ${tierTitle}\nSelected Styles: ${stylesText}`;
+
+  const buyUrl = `mailto:info@eranbenbarak.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
 
   return (
     <div className={styles.sectionWrapper} id="purchase">
@@ -78,7 +92,7 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
                 <div className={styles.tierHeader}>
                   <span className="text-meta">{t(`purchase.${tKey}_title`)}</span>
                   <span className={styles.tierPriceHint}>
-                    {CURRENCY_SYMBOLS[currency]}{PRICES[currency][tKey]}
+                    {CURRENCY_SYMBOL}{PRICES[tKey].toLocaleString()}
                   </span>
                 </div>
                 <p className={styles.tierDesc}>{t(`purchase.${tKey}_desc`)}</p>
@@ -134,18 +148,6 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
             <h3 className="text-meta" style={{ opacity: 0 }}>Summary</h3>
           </div>
           <div className={styles.purchaseSummary}>
-            <div className={styles.currencyToggle}>
-              {(["NIS", "USD", "EUR"] as Currency[]).map(c => (
-                <button 
-                  key={c} 
-                  className={`${styles.currencyBtn} ${currency === c ? styles.active : ""}`}
-                  onClick={() => setCurrency(c)}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
-
             <div className={styles.totalContainer}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <span className="text-meta" style={{ opacity: 0.5 }}>{t("purchase.total")}</span>
@@ -156,25 +158,19 @@ export default function PurchaseSection({ slug, fontName, weights }: PurchaseSec
               <div className={styles.priceDisplay}>
                 <AnimatePresence mode="wait">
                   <motion.span
-                    key={`${totalPrice}-${currency}`}
+                    key={`${totalPrice}`}
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     className={styles.finalPrice}
                   >
-                    {CURRENCY_SYMBOLS[currency]}{totalPrice.toLocaleString()}
+                    {CURRENCY_SYMBOL}{totalPrice.toLocaleString()}
                   </motion.span>
                 </AnimatePresence>
                 
                 {isFullFamily && (
                   <span className={styles.discountDisclaimer}>
                     {t("purchase.full_family_discount_disclaimer")}
-                  </span>
-                )}
-
-                {(currency === "USD" || currency === "EUR") && (
-                  <span className="text-meta" style={{ fontSize: "0.65rem", opacity: 0.5, marginTop: "0.5rem", textTransform: "none" }}>
-                    {t("specimen.converter_note")}
                   </span>
                 )}
               </div>

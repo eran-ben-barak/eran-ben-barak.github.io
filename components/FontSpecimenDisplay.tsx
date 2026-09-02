@@ -267,6 +267,7 @@ export default function FontSpecimenDisplay({ font }: FontSpecimenProps) {
             <PurchaseSection 
               slug={font.family.toLowerCase().replace(/'/g, "").replace(/ /g, "-")}
               fontName={font.name}
+              hebrewName={font.hebrewName}
               weights={font.weights}
             />
           );
@@ -277,6 +278,10 @@ export default function FontSpecimenDisplay({ font }: FontSpecimenProps) {
           neoklass: { 
             text: t("specimen.neoklass_link"), 
             link: "https://fontef.com/neoklass" 
+          },
+          monoklass: { 
+            text: t("specimen.monoklass_link"), 
+            link: "https://fontef.com/monoklass" 
           },
           stickyvariable: { 
             text: t("specimen.sticky_link"), 
